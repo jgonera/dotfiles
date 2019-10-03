@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# Find and replace by a given list of files.
+#
+# rreplace foo bar **/*.rb
+
+set -euo pipefail
+
+FIND_THIS=$1
+shift
+REPLACE_WITH=$1
+shift
+
+rg -l "$FIND_THIS" $* | xargs sed -E -i '' "s/$FIND_THIS/$REPLACE_WITH/g"
