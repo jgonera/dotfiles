@@ -40,9 +40,9 @@ call plug#end()
 
 " Hide buffers with unsaved changes instead of closing them.
 set hidden
-" More colors in the terminal.
-set termguicolors
-colorscheme base16-default-dark
+" Color scheme.
+let base16colorspace=256
+source ~/.vimrc_background
 " Enable mouse in terminal.
 set mouse=a
 " Don't timeout on mappings.

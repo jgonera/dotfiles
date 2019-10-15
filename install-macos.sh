@@ -2,10 +2,11 @@
 
 DOTFILES_DIR=$(cd "$(dirname "$0")"; pwd)
 
-ln -sfF "$DOTFILES_DIR/data/bin" ~/bin
-ln -sfF "$DOTFILES_DIR/data/nvim" ~/.config/nvim
-ln -sfF "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
-ln -sfF "$DOTFILES_DIR/data/zshrc" ~/.zshrc
+ln -sfn "$DOTFILES_DIR/data/base16-shell" ~/.config/base16-shell
+ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
+ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
+ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
+ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 
 brew install nvim
 brew install ripgrep
