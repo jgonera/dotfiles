@@ -11,7 +11,6 @@ brew install nvim
 brew install ripgrep
 brew install fzf
 brew install git
-brew install zsh-completions
 brew install tree
 
 git config --global push.default current
