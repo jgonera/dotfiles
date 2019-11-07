@@ -165,12 +165,8 @@ endif
 " ALE (linting).
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'elixir': ['mix_format'],
   \ 'javascript': ['prettier'],
   \ 'typescript': ['prettier'],
-\}
-let g:ale_linters = {
-  \ 'typescript': ['tslint'],
 \}
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
