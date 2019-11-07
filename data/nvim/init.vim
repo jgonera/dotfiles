@@ -35,6 +35,8 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'kshenoy/vim-signature'
 " Linting.
 Plug 'w0rp/ale'
+" .editorconfig support
+Plug 'editorconfig/editorconfig-vim'
 
 call plug#end()
 
@@ -164,7 +166,6 @@ endif
 
 " ALE (linting).
 let g:ale_fixers = {
-  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'javascript': ['prettier'],
   \ 'typescript': ['prettier'],
 \}
