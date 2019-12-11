@@ -34,9 +34,11 @@ Plug 'terryma/vim-multiple-cursors'
 " Easier marks.
 Plug 'kshenoy/vim-signature'
 " Linting.
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 " .editorconfig support
 Plug 'editorconfig/editorconfig-vim'
+" CSS3.
+Plug 'hail2u/vim-css3-syntax'
 
 call plug#end()
 
@@ -63,6 +65,9 @@ nmap <silent> <leader>vc :e $MYVIMRC<CR>
 nmap <silent> <leader>vl :so $MYVIMRC<CR>
 " Syntax highlighting and indent.
 syntax on
+" Syntax synchronization from the beginning of the file (prevents broken
+" highlighting after scrolling/jumping).
+autocmd BufEnter * :syntax sync fromstart
 " Don't wrap text by default. Leader+w to toggle.
 set nowrap
 " But when wrapping, break at a word boundary
@@ -132,6 +137,7 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_section_x = ''
 let g:airline_section_y = ''
+let g:airline#extensions#ale#enabled = 1
 
 " fzf.
 noremap <leader>e <Esc>:Files<CR>
@@ -166,11 +172,17 @@ endif
 
 " ALE (linting).
 let g:ale_fixers = {
+  \ 'css': ['prettier', 'stylelint'],
   \ 'javascript': ['prettier'],
   \ 'typescript': ['prettier'],
+  \ 'typescriptreact': ['prettier'],
 \}
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_completion_tsserver_autoimport = 1
+highlight ALEError ctermbg=18 cterm=none
+highlight ALEWarning ctermbg=18 cterm=none
