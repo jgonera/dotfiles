@@ -21,3 +21,15 @@ base16_eighties
 # prompt
 autoload -Uz colors && colors
 PROMPT="%F{8}%* %~ %{$reset_color%}\$ "
+
+# Useful aliases and functions
+alias ll="ls -alFG"
+alias tree="tree -I node_modules"
+
+function task() {
+  local DIR=$(pwd)
+  while [ ! -z "$DIR" ] && [ ! -f "$DIR/Taskfile" ]; do
+    DIR="${DIR%\/*}"
+  done
+  $DIR/Taskfile
+}
