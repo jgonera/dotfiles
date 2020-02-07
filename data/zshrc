@@ -31,5 +31,5 @@ function task() {
   while [ ! -z "$DIR" ] && [ ! -f "$DIR/Taskfile" ]; do
     DIR="${DIR%\/*}"
   done
-  $DIR/Taskfile
+  $DIR/Taskfile $@
 }
