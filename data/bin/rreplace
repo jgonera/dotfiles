@@ -11,4 +11,4 @@ shift
 REPLACE_WITH=$1
 shift
 
-rg -l "$FIND_THIS" $* | xargs sed -E -i '' "s/$FIND_THIS/$REPLACE_WITH/g"
+rg -l "$FIND_THIS" "$@" | xargs sed -E -i '' "s|$FIND_THIS|$REPLACE_WITH|g"
