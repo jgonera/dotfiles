@@ -4,6 +4,7 @@ DOTFILES_DIR=$(cd "$(dirname "$0")"; pwd)
 
 echo "Creating symlinks..."
 
+mkdir ~/.config
 ln -sfn "$DOTFILES_DIR/data/base16-shell" ~/.config/base16-shell
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
