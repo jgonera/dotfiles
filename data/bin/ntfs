@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DISK="/dev/$(diskutil list | grep NTFS | awk '{print $NF}')"
+
+# unmount if necessary
+sudo diskutil unmount "$DISK"
+# mount with ntfs-3g
+sudo mkdir /Volumes/NTFS 2> /dev/null
+echo Mounting with ntfs-3g...
+sudo /usr/local/bin/ntfs-3g "$DISK" /Volumes/NTFS -o local -o allow_other -o auto_xattr -o auto_cache
