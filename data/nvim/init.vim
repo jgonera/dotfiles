@@ -187,6 +187,7 @@ endif
 let g:ale_fixers = {
   \ 'css': ['stylelint', 'prettier'],
   \ 'graphql': ['prettier'],
+  \ 'html': ['prettier'],
   \ 'javascript': ['eslint', 'prettier'],
   \ 'sql': ['pgformatter'],
   \ 'typescript': ['eslint', 'prettier'],
@@ -239,12 +240,6 @@ call jspretmpl#register_tag('sql', 'sql')
 autocmd FileType javascript JsPreTmpl
 autocmd FileType javascript.jsx JsPreTmpl
 autocmd FileType typescript JsPreTmpl
-
-" Autoformatting for Markdown.
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,mkd call pencil#init()
-augroup END
 
 let g:pencil#map#suspend_af = 'K'
 
