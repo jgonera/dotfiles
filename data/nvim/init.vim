@@ -122,7 +122,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " Format JSON.
-command! JsonFormat %!python -m json.tool
+command! JSONFormat %!python3 -m json.tool
 " Use system clipboard + shortcut for relative path of current file into
 " clipboard.
 if has('macunix')
@@ -184,17 +184,26 @@ if executable('rg')
 endif
 
 " ALE (linting).
+let g:ale_linters = {
+  \ 'python': ['flake8', 'mypy', 'pylsp'],
+  \ 'terraform': ['terraform'],
+\}
 let g:ale_fixers = {
   \ 'css': ['stylelint', 'prettier'],
   \ 'graphql': ['prettier'],
   \ 'html': ['prettier'],
   \ 'javascript': ['eslint', 'prettier'],
+  \ 'json': ['prettier'],
+  \ 'markdown': ['prettier'],
+  \ 'python': ['isort', 'black'],
   \ 'sql': ['pgformatter'],
+  \ 'terraform': ['terraform'],
   \ 'typescript': ['eslint', 'prettier'],
   \ 'typescriptreact': ['eslint', 'prettier'],
 \}
 let g:ale_completion_autoimport = 1
 let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_javascript_prettier_options = '--prose-wrap always'
 let g:ale_typescript_prettier_use_local_config = 1
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
@@ -203,6 +212,8 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_sql_pgformatter_options = '--spaces 2'
 highlight ALEError ctermbg=18 cterm=none
 highlight ALEWarning ctermbg=18 cterm=none
+command! ALEDisableFixers let g:ale_fix_on_save=0
+command! ALEEnableFixers let g:ale_fix_on_save=1
 
 noremap gj <Esc>:ALENext<CR>
 noremap gk <Esc>:ALEPrevious<CR>
