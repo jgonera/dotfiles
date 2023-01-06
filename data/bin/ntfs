@@ -2,11 +2,23 @@
 
 set -euo pipefail
 
-DISK="/dev/$(diskutil list | grep NTFS | awk '{print $NF}')"
+DISK=${1:-$(diskutil list | grep NTFS | awk '{print $NF}')}
+DEVICE="/dev/$DISK"
+# https://unix.stackexchange.com/questions/421898/test-if-variable-contains-newline-posix
+NL='
+'
+if [[ "$DISK" == *"$NL"* ]]; then
+  echo Usage: ntfs [DISK]
+  echo
+  echo Available NTFS disks:
+  diskutil list | grep NTFS | sed 's/.*NTFS //g'
+  exit 1
+fi
 
 # unmount if necessary
-sudo diskutil unmount "$DISK"
+sudo diskutil unmount "$DEVICE" || true
 # mount with ntfs-3g
-sudo mkdir /Volumes/NTFS 2> /dev/null
+sudo mkdir "/Volumes/$DISK" 2> /dev/null || true
 echo Mounting with ntfs-3g...
-sudo /usr/local/bin/ntfs-3g "$DISK" /Volumes/NTFS -o local -o allow_other -o auto_xattr -o auto_cache
+sudo /usr/local/bin/ntfs-3g "$DEVICE" "/Volumes/$DISK" \
+  -o local -o allow_other -o auto_xattr -o auto_cache
