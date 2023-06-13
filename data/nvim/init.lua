@@ -1,3 +1,4 @@
+vim.cmd([[
 " This supposedly removes compatibility with Vi, but nobody really knows if
 " it's needed (http://stackoverflow.com/q/5845557/365238).
 set nocompatible
@@ -304,3 +305,4 @@ let g:csv_no_conceal = 1
 
 "" Remap for rename current word
 "nmap <leader>rn <Plug>(coc-rename)
+]])
