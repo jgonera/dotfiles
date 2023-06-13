@@ -12,9 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  -- Color scheme
-  "chriskempson/base16-vim",
+  -- Syntax highlighting
+  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- Fuzzy opener
+  "junegunn/fzf",
   "junegunn/fzf.vim",
   -- Automatic indentation
   "tpope/vim-sleuth",
@@ -29,9 +30,16 @@ require("lazy").setup({
   "ntpeters/vim-better-whitespace",
   -- Easy commenting
   "scrooloose/nerdcommenter",
-  -- Autocompletion
-  "prabirshrestha/asyncomplete.vim",
-  { "prabirshrestha/asyncomplete-buffer.vim", commit = "b8f00ea" },
+  -- LSP and Autocompletion
+  "neovim/nvim-lspconfig",
+  "hrsh7th/cmp-nvim-lsp",
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-path",
+  "hrsh7th/cmp-cmdline",
+  "hrsh7th/nvim-cmp",
+  "L3MON4D3/LuaSnip",
+  'saadparwaiz1/cmp_luasnip',
+  { "williamboman/mason.nvim", build = ":MasonUpdate" },
   -- Easier marks
   "kshenoy/vim-signature",
   -- Linting
@@ -63,10 +71,118 @@ vim.opt.foldenable = false
 vim.opt.backup = false
 vim.opt.swapfile = false
 
+-- Mason
+require("mason").setup()
+
+-- Treesitter
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = { "javascript" },
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    enable = true,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+-- nvim-cmp
+local cmp = require'cmp'
+local luasnip = require('luasnip')
+
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable,
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+require('lspconfig').tsserver.setup {
+  capabilities = capabilities
+}
+
 vim.cmd([[
-" Color scheme.
-let base16colorspace=256
-source ~/.vimrc_background
 " Change the leader key from \ to ,
 let mapleader=","
 " Alias for :
@@ -150,11 +266,6 @@ let g:fzf_colors = {
   \ 'header':  ['fg', 'Comment'],
 \}
 
-" NERDTree config.
-let NERDTreeMinimalUI = 1
-noremap <silent> <leader>t <Esc>:NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
 " Use ripgrep if possible.
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
@@ -187,8 +298,8 @@ let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_sql_pgformatter_options = '--spaces 2'
-highlight ALEError ctermbg=18 cterm=none
-highlight ALEWarning ctermbg=18 cterm=none
+"highlight ALEError ctermbg=18 cterm=none
+"highlight ALEWarning ctermbg=18 cterm=none
 command! ALEDisableFixers let g:ale_fix_on_save=0
 command! ALEEnableFixers let g:ale_fix_on_save=1
 
@@ -197,28 +308,4 @@ noremap gk <Esc>:ALEPrevious<CR>
 noremap gd <Esc>:ALEGoToDefinition<CR>
 noremap gt <Esc>:ALEGoToTypeDefinition<CR>
 noremap <leader>rn <Esc>:ALERename<CR>
-
-" Asyncomplete.
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-  \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-  \ 'name': 'buffer',
-  \ 'whitelist': ['*'],
-  \ 'completor': function('asyncomplete#sources#buffer#completor'),
-  \ }))
-
-let g:asyncomplete_auto_popup = 0
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S_TAB>"
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 ]])
