@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+THRESHOLD=90d
+
+items=`find ~/Downloads -maxdepth 1 -mtime +$THRESHOLD`
+
+printf "Found $(echo "$items" | wc -l | sed 's/ *//') items older than $THRESHOLD.\n\n"
+
+IFS=$'\n'
+for item in $items; do
+  read -n 1 -p "Delete $item? (Y/n) " answer
+  printf "\n"
+
+  if [ "$answer" == "Y" ]; then
+    mv "$item" ~/.Trash
+  fi
+done
