@@ -12,6 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  -- Color scheme
+  "marko-cerovac/material.nvim",
+  "navarasu/onedark.nvim",
   -- Syntax highlighting
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- Fuzzy opener
@@ -44,6 +47,25 @@ require("lazy").setup({
   "kshenoy/vim-signature",
   -- Linting
   "dense-analysis/ale",
+})
+
+vim.g.material_style = "darker"
+
+require('material').setup({
+  disable = {
+    background = true
+  },
+  high_visibility = {
+    darker = true -- Enable higher contrast text for darker style
+  },
+})
+
+require('onedark').setup({
+  style = 'warm',
+  transparent = true,
+  code_style = {
+    comments = 'none',
+  },
 })
 
 -- Enable mouse in terminal
@@ -183,6 +205,8 @@ require('lspconfig').tsserver.setup {
 }
 
 vim.cmd([[
+" Color scheme
+colorscheme onedark
 " Change the leader key from \ to ,
 let mapleader=","
 " Alias for :

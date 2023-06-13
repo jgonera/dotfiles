@@ -2,12 +2,6 @@
 
 DOTFILES_DIR=$(cd "$(dirname "$0")"; pwd)
 
-if [ -z "$(ls -A "$DOTFILES_DIR/data/base16-shell" 2> /dev/null)" ]; then
-  echo "Submodules missing, checking them out..."
-  git submodule init
-  git submodule update
-fi
-
 echo "Creating symlinks..."
 
 mkdir ~/.config
