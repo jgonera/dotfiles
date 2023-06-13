@@ -1,0 +1,18 @@
+{
+  "ale": { "branch": "master", "commit": "c0eff9f2f18c5408596ce1e8e43dc7933340e514" },
+  "asyncomplete-buffer.vim": { "branch": "master", "commit": "b8f00ea28c29d776148b3380df8f739b67696f68" },
+  "asyncomplete.vim": { "branch": "master", "commit": "b3fbac1930be2c9cdf956f4a0346c1dd0e9abd44" },
+  "base16-vim": { "branch": "master", "commit": "3be3cd82cd31acfcab9a41bad853d9c68d30478d" },
+  "editorconfig-vim": { "branch": "master", "commit": "7f4e4dfc58c480d154116614e616d90aac77204d" },
+  "fzf.vim": { "branch": "master", "commit": "1dcdb21db618055134cd611f4f5918f6d00a5df0" },
+  "lazy.nvim": { "branch": "main", "commit": "6b2311a46a3808e366bb251270f4cc04afb421ed" },
+  "nerdcommenter": { "branch": "master", "commit": "b0b09ea46c9f0509556257bd8b838b40f493d6a0" },
+  "vim-airline": { "branch": "master", "commit": "423fe9e2acbe64bd8637d0bedff132972d7603de" },
+  "vim-airline-themes": { "branch": "master", "commit": "dd81554c2231e438f6d0e8056ea38fd0e80ac02a" },
+  "vim-better-whitespace": { "branch": "master", "commit": "1b22dc57a2751c7afbc6025a7da39b7c22db635d" },
+  "vim-fugitive": { "branch": "master", "commit": "43f18ab9155c853a84ded560c6104e6300ad41da" },
+  "vim-polyglot": { "branch": "master", "commit": "bc8a81d3592dab86334f27d1d43c080ebf680d42" },
+  "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
+  "vim-signature": { "branch": "master", "commit": "6bc3dd1294a22e897f0dcf8dd72b85f350e306bc" },
+  "vim-sleuth": { "branch": "master", "commit": "1cc4557420f215d02c4d2645a748a816c220e99b" }
+}

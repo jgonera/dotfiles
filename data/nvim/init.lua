@@ -1,68 +1,72 @@
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  -- Color scheme
+  "chriskempson/base16-vim",
+  -- Fuzzy opener
+  "junegunn/fzf.vim",
+  -- Automatic indentation
+  "tpope/vim-sleuth",
+  -- Better status line
+  "vim-airline/vim-airline",
+  "vim-airline/vim-airline-themes",
+  -- Gblame
+  "tpope/vim-fugitive",
+  -- Gbrowse in GitHub
+  "tpope/vim-rhubarb",
+  -- Highlight trailing white space
+  "ntpeters/vim-better-whitespace",
+  -- Easy commenting
+  "scrooloose/nerdcommenter",
+  -- Autocompletion
+  "prabirshrestha/asyncomplete.vim",
+  { "prabirshrestha/asyncomplete-buffer.vim", commit = "b8f00ea" },
+  -- Easier marks
+  "kshenoy/vim-signature",
+  -- Linting
+  "dense-analysis/ale",
+})
+
+-- Enable mouse in terminal
+vim.opt.mouse = "a"
+-- Don't time out on mappings
+vim.opt.timeout = false
+-- Do time out on terminal key codes
+vim.opt.ttimeout = true
+-- Timeout after 50ms
+vim.opt.timeoutlen = 50
+-- Show line numbers
+vim.opt.number = true
+-- Keep more space around the cursor when scrolling
+vim.opt.scrolloff = 3
+-- Indenting and tab settings
+vim.opt.smartindent = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+-- Always show marks/sign column
+vim.opt.signcolumn = "number"
+-- Don't fold by default
+vim.opt.foldenable = false
+-- Prevent cluttering up working directory with ~ and .swp files
+vim.opt.backup = false
+vim.opt.swapfile = false
+
 vim.cmd([[
-" This supposedly removes compatibility with Vi, but nobody really knows if
-" it's needed (http://stackoverflow.com/q/5845557/365238).
-set nocompatible
-
-" Plugins.
-call plug#begin()
-
-" Color scheme
-Plug 'chriskempson/base16-vim'
-" Fuzzy opener.
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
-" Automatic indentation.
-Plug 'tpope/vim-sleuth'
-" Better status line.
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Gblame.
-Plug 'tpope/vim-fugitive'
-" Gbrowse in GitHub.
-Plug 'tpope/vim-rhubarb'
-" Highlight trailing white space.
-Plug 'ntpeters/vim-better-whitespace'
-" Better syntax highlighting for many languages.
-Plug 'sheerun/vim-polyglot'
-" Easy commenting.
-Plug 'scrooloose/nerdcommenter'
-" Tree explorer.
-Plug 'scrooloose/nerdtree'
-" Autocompletion.
-"Plug 'ervandew/supertab'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim', { 'commit': 'b8f00ea' }
-" Easier marks.
-Plug 'kshenoy/vim-signature'
-" Linting / LSP.
-Plug 'dense-analysis/ale'
-" .editorconfig support
-Plug 'editorconfig/editorconfig-vim'
-" CSS3.
-Plug 'hail2u/vim-css3-syntax'
-" JavaScript import sizes.
-Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
-" JavaScript template tags syntax highlighting.
-Plug 'Quramy/vim-js-pretty-template'
-" Autoformatting for Markdown, etc.
-Plug 'reedes/vim-pencil'
-
-call plug#end()
-
-" Hide buffers with unsaved changes instead of closing them.
-set hidden
 " Color scheme.
 let base16colorspace=256
 source ~/.vimrc_background
-" Enable mouse in terminal.
-set mouse=a
-" Don't timeout on mappings.
-set notimeout
-" Do timeout on terminal key codes.
-set ttimeout
-" Timeout after 50ms.
-set timeoutlen=50
 " Change the leader key from \ to ,
 let mapleader=","
 " Alias for :
@@ -71,8 +75,6 @@ vnoremap ; :
 " Quickly edit/reload the config file.
 nmap <silent> <leader>vc :e $MYVIMRC<CR>
 nmap <silent> <leader>vl :so $MYVIMRC<CR>
-" Syntax highlighting and indent.
-syntax on
 " Syntax synchronization from the beginning of the file (prevents broken
 " highlighting after scrolling/jumping).
 autocmd BufEnter * :syntax sync fromstart
@@ -81,42 +83,16 @@ set nowrap
 " But when wrapping, break at a word boundary
 set linebreak
 map <silent> <leader>w :set nowrap!<CR>
-" Show line numbers.
-set number
-" Make backspace work like most other apps.
-set backspace=indent,eol,start
-" Keep more space around the cursor when scrolling.
-set scrolloff=3
-" Indenting and tab settings.
-filetype plugin indent on
-set autoindent
-set smartindent
-set expandtab
-set tabstop=2
-set shiftwidth=2
-" Automatically insert the current comment leader.
-set formatoptions+=or
 " Close buffer (without removing split).
 nmap <silent> <leader>d :b#<bar>bd#<CR>
 " Folding.
 set foldmethod=indent
-" Don't fold by default.
-set nofoldenable
 " Ignore case when searching (and, unfortunately, replacing?).
 set ignorecase
 set smartcase
 " Be case sensitive when autocompleting, but not when searching.
 au InsertEnter * set noignorecase
 au InsertLeave * set ignorecase
-" Incremental search.
-set incsearch
-" Don't highlight search result.
-set nohlsearch
-" Prevent cluttering up working directory with ~ and .swp files.
-set nobackup
-set noswapfile
-" Always show marks/sign column.
-set signcolumn=yes
 " Easier navigation between splits.
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -245,64 +221,4 @@ inoremap <silent><expr> <TAB>
   \ asyncomplete#force_refresh()
 inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S_TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-
-" JavaScript template tags syntax highlighting.
-call jspretmpl#register_tag('sql', 'sql')
-
-autocmd FileType javascript JsPreTmpl
-autocmd FileType javascript.jsx JsPreTmpl
-autocmd FileType typescript JsPreTmpl
-
-let g:pencil#map#suspend_af = 'K'
-
-" csv.vim config.
-" Do not replace actual delimiters with `|`.
-let g:csv_no_conceal = 1
-
-" CoC.
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-"inoremap <silent><expr> <TAB>
-      "\ pumvisible() ? "\<C-n>" :
-      "\ <SID>check_back_space() ? "\<TAB>" :
-      "\ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-"function! s:check_back_space() abort
-  "let col = col('.') - 1
-  "return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
-
-"" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-"" Coc only does snippet and additional edit on confirm.
-"" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"" Or use `complete_info` if your vim support it, like:
-"inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-"" Use `gk` and `gj` to navigate diagnostics
-"nmap <silent> gk <Plug>(coc-diagnostic-prev)
-"nmap <silent> gj <Plug>(coc-diagnostic-next)
-
-"" Remap keys for gotos
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-
-"" Use K to show documentation in preview window
-"nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-"function! s:show_documentation()
-  "if (index(['vim','help'], &filetype) >= 0)
-    "execute 'h '.expand('<cword>')
-  "else
-    "call CocAction('doHover')
-  "endif
-"endfunction
-
-"" Highlight symbol under cursor on CursorHold
-"autocmd CursorHold * silent call CocActionAsync('highlight')
-
-"" Remap for rename current word
-"nmap <leader>rn <Plug>(coc-rename)
 ]])
