@@ -32,7 +32,7 @@ require("lazy").setup({
   -- Highlight trailing white space
   "ntpeters/vim-better-whitespace",
   -- Easy commenting
-  "scrooloose/nerdcommenter",
+  'numToStr/Comment.nvim',
   -- LSP and Autocompletion
   "neovim/nvim-lspconfig",
   "hrsh7th/cmp-nvim-lsp",
@@ -93,8 +93,8 @@ vim.opt.foldenable = false
 vim.opt.backup = false
 vim.opt.swapfile = false
 
--- Mason
 require("mason").setup()
+require("Comment").setup()
 
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
