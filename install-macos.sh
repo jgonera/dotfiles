@@ -16,10 +16,12 @@ ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
 ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
+ln -sfn "$DOTFILES_DIR/data/wezterm.lua" ~/.wezterm.lua
 ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 
 echo "Installing Homebrew packages..."
 
+brew install --cask wezterm
 brew install nvim
 brew install ripgrep
 brew install fzf
