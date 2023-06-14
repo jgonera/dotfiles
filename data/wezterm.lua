@@ -17,7 +17,7 @@ config.initial_rows = 120
 config.window_padding = {
   left = "1cell",
   right = "1cell",
-  top = "0.5cell",
+  top = "0.4cell",
   bottom = 0,
 }
 
