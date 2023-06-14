@@ -70,6 +70,9 @@ require('onedark').setup({
   code_style = {
     comments = 'none',
   },
+  diagnostics = {
+    background = false,
+  },
 })
 
 -- Enable mouse in terminal
@@ -115,33 +118,38 @@ require("Comment").setup()
 local null_ls = require("null-ls")
 null_ls.setup({
   sources = {
-    null_ls.builtins.completion.spell,
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.flake8,
   },
 })
 
+-- Show diagnostics only after save
+vim.api.nvim_create_autocmd({"BufNew", "InsertEnter"}, {
+  callback = function(args)
+    vim.diagnostic.disable(args.buf)
+  end
+})
+
+vim.api.nvim_create_autocmd({"BufWrite"}, {
+  callback = function(args)
+    vim.diagnostic.enable(args.buf)
+  end
+})
+
+-- Clear search highlight after ESC in Normal mode
+vim.keymap.set('n', '<Esc>', '<cmd>noh<cr>')
+
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
-
+  ensure_installed = { "lua", "vim", "vimdoc", "query" },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
-
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
-
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { "javascript" },
-
-  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
   highlight = {
     enable = true,
-
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -160,6 +168,9 @@ local has_words_before = function()
 end
 
 cmp.setup({
+  completion = {
+    autocomplete = false,
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -233,9 +244,6 @@ vnoremap ; :
 " Quickly edit/reload the config file.
 nmap <silent> <leader>vc :e $MYVIMRC<CR>
 nmap <silent> <leader>vl :so $MYVIMRC<CR>
-" Syntax synchronization from the beginning of the file (prevents broken
-" highlighting after scrolling/jumping).
-autocmd BufEnter * :syntax sync fromstart
 " Don't wrap text by default. Leader+w to toggle.
 set nowrap
 " But when wrapping, break at a word boundary
@@ -273,11 +281,11 @@ vnoremap <leader>P "0P
 " Don't use any backups for crontab.
 autocmd filetype crontab setlocal nobackup nowritebackup
 " Highlight current line.
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
+" augroup CursorLine
+"   au!
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+" augroup END
 
 " ALE (autoformatting)
 let g:ale_fixers = {
