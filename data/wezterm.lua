@@ -26,7 +26,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     tab_title = tab.tab_title
   end
 
-  return " " .. cwd .. " — " .. tab_title .. " "
+  return " " .. tab.tab_index + 1 .. ": " .. cwd .. " — " .. tab_title .. " "
 end)
 
 return config

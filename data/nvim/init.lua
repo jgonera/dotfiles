@@ -13,8 +13,10 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   -- Color scheme
-  "marko-cerovac/material.nvim",
-  "navarasu/onedark.nvim",
+  { "marko-cerovac/material.nvim", priority = 1000 },
+  { "navarasu/onedark.nvim", priority = 1000 },
+  -- Common Lua functions
+  "nvim-lua/plenary.nvim",
   -- Syntax highlighting
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- Fuzzy opener
@@ -43,10 +45,12 @@ require("lazy").setup({
   "L3MON4D3/LuaSnip",
   'saadparwaiz1/cmp_luasnip',
   { "williamboman/mason.nvim", build = ":MasonUpdate" },
+  "williamboman/mason-lspconfig.nvim",
+  -- Autoformatting and linting
+  "jose-elias-alvarez/null-ls.nvim",
+  "dense-analysis/ale",
   -- Easier marks
   "kshenoy/vim-signature",
-  -- Linting
-  "dense-analysis/ale",
 })
 
 vim.g.material_style = "darker"
@@ -94,7 +98,28 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 
 require("mason").setup()
+require("mason-lspconfig").setup()
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+require("mason-lspconfig").setup_handlers {
+  function (server_name)
+    require("lspconfig")[server_name].setup {
+      capabilities = capabilities
+    }
+  end,
+}
+
 require("Comment").setup()
+
+local null_ls = require("null-ls")
+null_ls.setup({
+  sources = {
+    null_ls.builtins.completion.spell,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.diagnostics.flake8,
+  },
+})
 
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
@@ -197,13 +222,6 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Set up lspconfig.
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-require('lspconfig').tsserver.setup {
-  capabilities = capabilities
-}
-
 vim.cmd([[
 " Color scheme
 colorscheme onedark
@@ -261,6 +279,28 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
+" ALE (autoformatting)
+let g:ale_fixers = {
+  \ 'css': ['stylelint', 'prettier'],
+  \ 'graphql': ['prettier'],
+  \ 'html': ['prettier'],
+  \ 'javascript': ['eslint', 'prettier'],
+  \ 'json': ['prettier'],
+  \ 'markdown': ['prettier'],
+  \ 'python': ['black'],
+  \ 'sql': ['prettier'],
+  \ 'terraform': ['terraform'],
+  \ 'typescript': ['eslint', 'prettier'],
+  \ 'typescriptreact': ['eslint', 'prettier'],
+\}
+let g:ale_linters = {}
+let g:ale_linters_explicit = 1
+let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_javascript_prettier_options = '--prose-wrap always'
+let g:ale_fix_on_save = 1
+command! ALEDisableFixers let g:ale_fix_on_save=0
+command! ALEEnableFixers let g:ale_fix_on_save=1
+
 " airline (statusbar).
 set laststatus=2
 let g:airline_left_sep = ''
@@ -294,42 +334,4 @@ let g:fzf_colors = {
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
 endif
-
-" ALE (linting).
-let g:ale_linters = {
-  \ 'python': ['flake8', 'mypy', 'pylsp'],
-  \ 'terraform': ['terraform'],
-\}
-let g:ale_fixers = {
-  \ 'css': ['stylelint', 'prettier'],
-  \ 'graphql': ['prettier'],
-  \ 'html': ['prettier'],
-  \ 'javascript': ['eslint', 'prettier'],
-  \ 'json': ['prettier'],
-  \ 'markdown': ['prettier'],
-  \ 'python': ['black'],
-  \ 'sql': ['prettier'],
-  \ 'terraform': ['terraform'],
-  \ 'typescript': ['eslint', 'prettier'],
-  \ 'typescriptreact': ['eslint', 'prettier'],
-\}
-let g:ale_completion_autoimport = 1
-let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_javascript_prettier_options = '--prose-wrap always'
-let g:ale_typescript_prettier_use_local_config = 1
-let g:ale_fix_on_save = 1
-let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_sql_pgformatter_options = '--spaces 2'
-"highlight ALEError ctermbg=18 cterm=none
-"highlight ALEWarning ctermbg=18 cterm=none
-command! ALEDisableFixers let g:ale_fix_on_save=0
-command! ALEEnableFixers let g:ale_fix_on_save=1
-
-noremap gj <Esc>:ALENext<CR>
-noremap gk <Esc>:ALEPrevious<CR>
-noremap gd <Esc>:ALEGoToDefinition<CR>
-noremap gt <Esc>:ALEGoToTypeDefinition<CR>
-noremap <leader>rn <Esc>:ALERename<CR>
 ]])
