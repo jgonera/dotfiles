@@ -3,9 +3,13 @@ local mux = wezterm.mux
 
 config = wezterm.config_builder()
 
-config.color_scheme = "Eighties (base16)"
-config.font = wezterm.font "FiraMono Nerd Font"
-config.font_size = 13
+config.color_scheme = "zenwritten_dark"
+-- config.color_scheme = "Afterglow"
+-- config.color_scheme = "Edge Dark (base16)"
+-- config.color_scheme = "Eighties (base16)"
+config.font = wezterm.font "Hack Nerd Font"
+config.font_size = 14
+config.line_height = 1.1
 config.use_fancy_tab_bar = false
 config.tab_max_width = 32
 config.initial_cols = 240
