@@ -13,7 +13,7 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # prompt
 autoload -Uz colors && colors
-PROMPT="%F{8}%* %~ %{$reset_color%}\$ "
+PROMPT="%F{244}%* %~ %{$reset_color%}\$ "
 
 # Useful aliases and functions
 alias ll="ls -alFG"
