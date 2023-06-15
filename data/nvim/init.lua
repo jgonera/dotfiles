@@ -48,7 +48,7 @@ require("lazy").setup({
   "williamboman/mason-lspconfig.nvim",
   -- Autoformatting and linting
   "jose-elias-alvarez/null-ls.nvim",
-  "dense-analysis/ale",
+  "lukas-reineke/lsp-format.nvim",
   -- Easier marks
   "kshenoy/vim-signature",
 })
@@ -102,8 +102,9 @@ vim.opt.swapfile = false
 
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("lsp-format").setup()
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("mason-lspconfig").setup_handlers {
   function (server_name)
@@ -117,9 +118,16 @@ require("Comment").setup()
 
 local null_ls = require("null-ls")
 null_ls.setup({
+  on_attach = require("lsp-format").on_attach,
   sources = {
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.flake8,
+    null_ls.builtins.diagnostics.stylelint,
+    null_ls.builtins.diagnostics.terraform_validate,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.eslint,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.terraform_fmt,
   },
 })
 
@@ -264,8 +272,6 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-" Format JSON.
-command! JSONFormat %!python3 -m json.tool
 " Use system clipboard + shortcut for relative path of current file into
 " clipboard.
 if has('macunix')
@@ -286,28 +292,6 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
 "   au WinLeave * setlocal nocursorline
 " augroup END
-
-" ALE (autoformatting)
-let g:ale_fixers = {
-  \ 'css': ['stylelint', 'prettier'],
-  \ 'graphql': ['prettier'],
-  \ 'html': ['prettier'],
-  \ 'javascript': ['eslint', 'prettier'],
-  \ 'json': ['prettier'],
-  \ 'markdown': ['prettier'],
-  \ 'python': ['black'],
-  \ 'sql': ['prettier'],
-  \ 'terraform': ['terraform'],
-  \ 'typescript': ['eslint', 'prettier'],
-  \ 'typescriptreact': ['eslint', 'prettier'],
-\}
-let g:ale_linters = {}
-let g:ale_linters_explicit = 1
-let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_javascript_prettier_options = '--prose-wrap always'
-let g:ale_fix_on_save = 1
-command! ALEDisableFixers let g:ale_fix_on_save=0
-command! ALEEnableFixers let g:ale_fix_on_save=1
 
 " airline (statusbar).
 set laststatus=2
