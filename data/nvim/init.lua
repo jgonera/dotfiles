@@ -144,6 +144,34 @@ vim.api.nvim_create_autocmd({"BufWrite"}, {
   end
 })
 
+vim.keymap.set('n', '<Enter>', vim.diagnostic.open_float)
+vim.keymap.set('n', 'gj', vim.diagnostic.goto_next)
+vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev)
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local opts = { buffer = ev.buf }
+
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', '<Enter>', function()
+      local current_lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+
+      if #vim.diagnostic.get(0, { lnum = current_lnum }) > 0 then
+        vim.diagnostic.open_float()
+      else
+        vim.lsp.buf.hover()
+      end
+    end, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  end,
+})
+
 -- Clear search highlight after ESC in Normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>noh<cr>')
 
