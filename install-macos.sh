@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 DOTFILES_DIR=$(cd "$(dirname "$0")"; pwd)
 
 echo "Creating symlinks..."
 
-mkdir ~/.config
+mkdir ~/.config || true
+mkdir ~/.config/bat || true
+
+ln -sfn "$DOTFILES_DIR/data/bat.conf" ~/.config/bat/config
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
 ln -sfn "$DOTFILES_DIR/data/gitconfig" ~/.gitconfig
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
