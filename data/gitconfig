@@ -1,0 +1,11 @@
+[push]
+	default = current
+[rebase]
+	autosquash = true
+[user]
+	email = jgonera@gmail.com
+	name = Juliusz Gonera
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
