@@ -29,7 +29,6 @@ brew install git
 brew install git-delta
 brew install nvim
 brew install ripgrep
-brew install vivid
 
 echo "Performing additional configuration..."
 

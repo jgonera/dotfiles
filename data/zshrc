@@ -1,8 +1,8 @@
 export PATH="$HOME/bin:$PATH"
 export EDITOR=nvim
 
-# Nicer colors
-export LS_COLORS="$(vivid generate one-dark)"
+# Fix colors in fd
+export LS_COLORS=
 
 # zsh-completions
 autoload -Uz compinit && compinit
