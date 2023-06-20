@@ -20,8 +20,7 @@ require("lazy").setup({
   -- Syntax highlighting
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   -- Fuzzy opener
-  "junegunn/fzf",
-  "junegunn/fzf.vim",
+  "ibhagwan/fzf-lua",
   -- Automatic indentation
   "tpope/vim-sleuth",
   -- Better status line
@@ -99,6 +98,8 @@ vim.opt.foldenable = false
 -- Prevent cluttering up working directory with ~ and .swp files
 vim.opt.backup = false
 vim.opt.swapfile = false
+-- Change the leader key from \ to ,
+vim.g.mapleader = ","
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -269,11 +270,27 @@ cmp.setup.cmdline(':', {
   })
 })
 
+-- fzf-lua
+local fzf_lua = require("fzf-lua")
+
+fzf_lua.setup({
+  winopts = {
+    fullscreen = true,
+    preview = {
+      flip_columns = 180,
+      title = false,
+    },
+  },
+  diagnostics = {
+    path_shorten = true,
+  },
+})
+
+vim.keymap.set('n', '<leader>e', fzf_lua.files)
+
 vim.cmd([[
 " Color scheme
 colorscheme onedark
-" Change the leader key from \ to ,
-let mapleader=","
 " Alias for :
 nnoremap ; :
 vnoremap ; :
@@ -328,27 +345,6 @@ let g:airline_right_sep = ''
 let g:airline_section_x = ''
 let g:airline_section_y = ''
 let g:airline#extensions#ale#enabled = 1
-
-" fzf.
-noremap <leader>e <Esc>:Files<CR>
-noremap <leader>b <Esc>:Buffers<CR>
-nnoremap <leader>f yiw<Esc>:Rg <C-R>0<CR>
-vnoremap <leader>f y<Esc>:Rg <C-R>0<CR>
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'],
-\}
 
 " Use ripgrep if possible.
 if executable('rg')
