@@ -24,7 +24,7 @@
   hunk-header-decoration-style = ul
   line-numbers = true
   navigate = true
-  syntax-theme = ansi
+  syntax-theme = base16
 
 [merge]
   conflictstyle = diff3
