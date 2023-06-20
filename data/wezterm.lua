@@ -3,10 +3,14 @@ local mux = wezterm.mux
 
 config = wezterm.config_builder()
 
-config.color_scheme = "zenwritten_dark"
+config.color_scheme = "OneDark (base16)"
+-- config.color_scheme = "zenwritten_dark"
 -- config.color_scheme = "Afterglow"
 -- config.color_scheme = "Edge Dark (base16)"
 -- config.color_scheme = "Eighties (base16)"
+config.colors = {
+  background = 'black',
+}
 config.font = wezterm.font "Hack"
 config.font_size = 14
 config.line_height = 1.1
