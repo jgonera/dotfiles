@@ -18,7 +18,7 @@ require("lazy").setup({
   -- Common Lua functions
   "nvim-lua/plenary.nvim",
   -- Syntax highlighting
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   -- Fuzzy opener
   "ibhagwan/fzf-lua",
   -- Automatic indentation
@@ -33,7 +33,7 @@ require("lazy").setup({
   -- Highlight trailing white space
   "ntpeters/vim-better-whitespace",
   -- Easy commenting
-  'numToStr/Comment.nvim',
+  "numToStr/Comment.nvim",
   -- LSP and Autocompletion
   "neovim/nvim-lspconfig",
   "hrsh7th/cmp-nvim-lsp",
@@ -42,7 +42,7 @@ require("lazy").setup({
   "hrsh7th/cmp-cmdline",
   "hrsh7th/nvim-cmp",
   "L3MON4D3/LuaSnip",
-  'saadparwaiz1/cmp_luasnip',
+  "saadparwaiz1/cmp_luasnip",
   { "williamboman/mason.nvim", build = ":MasonUpdate" },
   "williamboman/mason-lspconfig.nvim",
   -- Autoformatting and linting
@@ -54,20 +54,20 @@ require("lazy").setup({
 
 vim.g.material_style = "darker"
 
-require('material').setup({
+require("material").setup({
   disable = {
-    background = true
+    background = true,
   },
   high_visibility = {
-    darker = true -- Enable higher contrast text for darker style
+    darker = true, -- Enable higher contrast text for darker style
   },
 })
 
-require('onedark').setup({
-  style = 'warm',
+require("onedark").setup({
+  style = "warm",
   transparent = true,
   code_style = {
-    comments = 'none',
+    comments = "none",
   },
   diagnostics = {
     background = false,
@@ -107,13 +107,13 @@ require("lsp-format").setup()
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-require("mason-lspconfig").setup_handlers {
-  function (server_name)
-    require("lspconfig")[server_name].setup {
-      capabilities = capabilities
-    }
+require("mason-lspconfig").setup_handlers({
+  function(server_name)
+    require("lspconfig")[server_name].setup({
+      capabilities = capabilities,
+    })
   end,
-}
+})
 
 require("Comment").setup()
 
@@ -123,26 +123,28 @@ null_ls.setup({
   sources = {
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.flake8,
+    null_ls.builtins.diagnostics.selene,
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.eslint,
     null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.terraform_fmt,
   },
 })
 
 -- Show diagnostics only after save
-vim.api.nvim_create_autocmd({"BufNew", "InsertEnter"}, {
+vim.api.nvim_create_autocmd({ "BufNew", "InsertEnter" }, {
   callback = function(args)
     vim.diagnostic.disable(args.buf)
-  end
+  end,
 })
 
-vim.api.nvim_create_autocmd({"BufWrite"}, {
+vim.api.nvim_create_autocmd({ "BufWrite" }, {
   callback = function(args)
     vim.diagnostic.enable(args.buf)
-  end
+  end,
 })
 
 -- Nicer icons for diagnostics
@@ -150,26 +152,26 @@ local signs = {
   Error = " ",
   Warn = " ",
   Hint = " ",
-  Info = " "
+  Info = " ",
 }
 
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-vim.keymap.set('n', '<Enter>', vim.diagnostic.open_float)
-vim.keymap.set('n', 'gj', vim.diagnostic.goto_next)
-vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev)
+vim.keymap.set("n", "<Enter>", vim.diagnostic.open_float)
+vim.keymap.set("n", "gj", vim.diagnostic.goto_next)
+vim.keymap.set("n", "gk", vim.diagnostic.goto_prev)
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
     local opts = { buffer = ev.buf }
 
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', '<Enter>', function()
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<Enter>", function()
       local current_lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
 
       if #vim.diagnostic.get(0, { lnum = current_lnum }) > 0 then
@@ -178,19 +180,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.buf.hover()
       end
     end, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
   end,
 })
 
 -- Clear search highlight after ESC in Normal mode
-vim.keymap.set('n', '<Esc>', '<cmd>noh<cr>')
+vim.keymap.set("n", "<Esc>", "<cmd>noh<cr>")
 
 -- Treesitter
-require'nvim-treesitter.configs'.setup {
+require("nvim-treesitter.configs").setup({
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
   ensure_installed = { "lua", "vim", "vimdoc", "query" },
   -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -206,11 +208,11 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-}
+})
 
 -- nvim-cmp
-local cmp = require'cmp'
-local luasnip = require('luasnip')
+local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -247,40 +249,40 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
-    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-y>'] = cmp.config.disable,
-    ['<C-e>'] = cmp.mapping({
+    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ["<C-y>"] = cmp.config.disable,
+    ["<C-e>"] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
   }, {
-    { name = 'buffer' },
-  })
+    { name = "buffer" },
+  }),
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
+cmp.setup.cmdline({ "/", "?" }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'buffer' }
-  }
+    { name = "buffer" },
+  },
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
+cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = 'path' }
+    { name = "path" },
   }, {
-    { name = 'cmdline' }
-  })
+    { name = "cmdline" },
+  }),
 })
 
 -- fzf-lua
@@ -299,7 +301,7 @@ fzf_lua.setup({
   },
 })
 
-vim.keymap.set('n', '<leader>e', fzf_lua.files)
+vim.keymap.set("n", "<leader>e", fzf_lua.files)
 
 vim.cmd([[
 " Color scheme

@@ -1,7 +1,6 @@
-local wezterm = require "wezterm"
-local mux = wezterm.mux
+local wezterm = require("wezterm")
 
-config = wezterm.config_builder()
+local config = wezterm.config_builder()
 
 config.color_scheme = "OneDark (base16)"
 -- config.color_scheme = "zenwritten_dark"
@@ -9,9 +8,9 @@ config.color_scheme = "OneDark (base16)"
 -- config.color_scheme = "Edge Dark (base16)"
 -- config.color_scheme = "Eighties (base16)"
 config.colors = {
-  background = 'black',
+  background = "black",
 }
-config.font = wezterm.font "Hack"
+config.font = wezterm.font("Hack")
 config.font_size = 14
 config.line_height = 1.1
 config.use_fancy_tab_bar = false
@@ -25,7 +24,7 @@ config.window_padding = {
   bottom = 0,
 }
 
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+wezterm.on("format-tab-title", function(tab)
   local pane = tab.active_pane
   local tab_title = pane.title
   local cwd = string.gsub(pane.current_working_dir, "(.*/)(.*)", "%2")
