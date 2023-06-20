@@ -16,11 +16,14 @@ ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 echo "Installing Homebrew packages..."
 
 brew install --cask wezterm
-brew install nvim
-brew install ripgrep
+brew install bat
+brew install exa
+brew install fd
 brew install fzf
 brew install git
-brew install tree
+brew install git-delta
+brew install nvim
+brew install ripgrep
 
 echo "Performing additional configuration..."
 
