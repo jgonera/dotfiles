@@ -24,8 +24,7 @@ require("lazy").setup({
   -- Automatic indentation
   "tpope/vim-sleuth",
   -- Better status line
-  "vim-airline/vim-airline",
-  "vim-airline/vim-airline-themes",
+  "nvim-lualine/lualine.nvim",
   -- Gblame
   "tpope/vim-fugitive",
   -- Gbrowse in GitHub
@@ -303,6 +302,21 @@ fzf_lua.setup({
 
 vim.keymap.set("n", "<leader>e", fzf_lua.files)
 
+-- lualine
+require("lualine").setup({
+  options = {
+    globalstatus = true,
+  },
+  sections = {
+    lualine_a = { "mode" },
+    lualine_b = { "branch", "diagnostics" },
+    lualine_c = { { "filename", path = 1 } },
+    lualine_x = { "encoding" },
+    lualine_y = { "progress" },
+    lualine_z = { "location" },
+  },
+})
+
 vim.cmd([[
 " Color scheme
 colorscheme onedark
@@ -352,14 +366,6 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
 "   au WinLeave * setlocal nocursorline
 " augroup END
-
-" airline (statusbar).
-set laststatus=2
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_section_x = ''
-let g:airline_section_y = ''
-let g:airline#extensions#ale#enabled = 1
 
 " Use ripgrep if possible.
 if executable('rg')
