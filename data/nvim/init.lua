@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   -- Color scheme
-  { "marko-cerovac/material.nvim", priority = 1000 },
   { "navarasu/onedark.nvim", priority = 1000 },
   -- Common Lua functions
   "nvim-lua/plenary.nvim",
@@ -52,17 +51,6 @@ require("lazy").setup({
   -- TODO: Do I use this?
   -- Easier marks
   "kshenoy/vim-signature",
-})
-
-vim.g.material_style = "darker"
-
-require("material").setup({
-  disable = {
-    background = true,
-  },
-  high_visibility = {
-    darker = true, -- Enable higher contrast text for darker style
-  },
 })
 
 require("onedark").setup({
