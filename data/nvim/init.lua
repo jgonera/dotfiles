@@ -345,10 +345,6 @@ if vim.fn.executable("rg") == 1 then
 end
 
 vim.cmd([[
-" TODO: Do I want this or should I steal some shortcuts from LazyVim?
-" Replace selected text with what's in the register without yanking old stuff.
-vnoremap <leader>p "0p
-vnoremap <leader>P "0P
 " Highlight current line.
 " augroup CursorLine
 "   au!
