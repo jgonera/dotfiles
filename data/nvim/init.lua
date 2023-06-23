@@ -29,6 +29,8 @@ require("lazy").setup({
   "tpope/vim-fugitive",
   -- Gbrowse in GitHub
   "tpope/vim-rhubarb",
+  -- TODO: Can this be replaced by a simple config? Do I need it with
+  -- autoformatting?
   -- Highlight trailing white space
   "ntpeters/vim-better-whitespace",
   -- Easy commenting
@@ -47,6 +49,7 @@ require("lazy").setup({
   -- Autoformatting and linting
   "jose-elias-alvarez/null-ls.nvim",
   "lukas-reineke/lsp-format.nvim",
+  -- TODO: Do I use this?
   -- Easier marks
   "kshenoy/vim-signature",
 })
@@ -317,37 +320,32 @@ require("lualine").setup({
   },
 })
 
+-- TODO: Check if some of those are needed with Neovim defaults
+
+vim.cmd("colorscheme onedark")
+-- Alias ; for : (faster to type)
+vim.keymap.set({ "n", "v" }, ";", ":")
+-- Don't wrap text by default. Leader+w to toggle.
+vim.opt.wrap = false
+vim.keymap.set("n", "<leader>w", "<cmd>set nowrap!<cr>")
+-- When wrapping, break at a word boundary
+vim.opt.linebreak = true
+-- Close buffer (without removing split)
+vim.keymap.set("n", "<leader>d", "<cmd>b#<bar>bd#<cr>")
+-- Folding
+vim.opt.foldmethod = "indent"
+-- Ignore case when searching (and, unfortunately, replacing?)
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+-- Easier navigation between splits
+vim.keymap.set("n", "<C-J>", "<C-W><C-J>")
+vim.keymap.set("n", "<C-K>", "<C-W><C-K>")
+vim.keymap.set("n", "<C-L>", "<C-W><C-L>")
+vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
+
 vim.cmd([[
-" Color scheme
-colorscheme onedark
-" Alias for :
-nnoremap ; :
-vnoremap ; :
-" Quickly edit/reload the config file.
-nmap <silent> <leader>vc :e $MYVIMRC<CR>
-nmap <silent> <leader>vl :so $MYVIMRC<CR>
-" Don't wrap text by default. Leader+w to toggle.
-set nowrap
-" But when wrapping, break at a word boundary
-set linebreak
-map <silent> <leader>w :set nowrap!<CR>
-" Close buffer (without removing split).
-nmap <silent> <leader>d :b#<bar>bd#<CR>
-" Folding.
-set foldmethod=indent
-" Ignore case when searching (and, unfortunately, replacing?).
-set ignorecase
-set smartcase
-" Be case sensitive when autocompleting, but not when searching.
-au InsertEnter * set noignorecase
-au InsertLeave * set ignorecase
-" Easier navigation between splits.
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
 " Use system clipboard + shortcut for relative path of current file into
-" clipboard.
+" clipboard
 if has('macunix')
   set clipboard=unnamed
   nmap <leader>rp :let @*=expand("%")<CR>
@@ -355,11 +353,10 @@ elseif has('unix')
   set clipboard=unnamedplus
   nmap <leader>rp :let @+=expand("%")<CR>
 endif
+" TODO: Do I want this or should I steal some shortcuts from LazyVim?
 " Replace selected text with what's in the register without yanking old stuff.
 vnoremap <leader>p "0p
 vnoremap <leader>P "0P
-" Don't use any backups for crontab.
-autocmd filetype crontab setlocal nobackup nowritebackup
 " Highlight current line.
 " augroup CursorLine
 "   au!
