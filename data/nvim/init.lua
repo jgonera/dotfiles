@@ -308,9 +308,7 @@ require("lualine").setup({
   },
 })
 
--- TODO: Check if some of those are needed with Neovim defaults
-
-vim.cmd("colorscheme onedark")
+vim.cmd.colorscheme("onedark")
 -- Alias ; for : (faster to type)
 vim.keymap.set({ "n", "v" }, ";", ":")
 -- Don't wrap text by default. Leader+w to toggle.
@@ -331,16 +329,22 @@ vim.keymap.set("n", "<C-K>", "<C-W><C-K>")
 vim.keymap.set("n", "<C-L>", "<C-W><C-L>")
 vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
 
+-- Use system clipboard + shortcut for relative path of current file into
+-- clipboard
+if vim.fn.has("macunix") then
+  vim.opt.clipboard = "unnamed"
+  vim.keymap.set("n", "<leader>rp", '<cmd>let @*=expand("%")<cr>')
+elseif vim.fn.has("unix") then
+  vim.opt.clipboard = "unnamedplus"
+  vim.keymap.set("n", "<leader>rp", '<cmd>let @+=expand("%")<cr>')
+end
+
+-- Use ripgrep if possible
+if vim.fn.executable("rg") == 1 then
+  vim.opt.grepprg = "rg --vimgrep --no-heading"
+end
+
 vim.cmd([[
-" Use system clipboard + shortcut for relative path of current file into
-" clipboard
-if has('macunix')
-  set clipboard=unnamed
-  nmap <leader>rp :let @*=expand("%")<CR>
-elseif has('unix')
-  set clipboard=unnamedplus
-  nmap <leader>rp :let @+=expand("%")<CR>
-endif
 " TODO: Do I want this or should I steal some shortcuts from LazyVim?
 " Replace selected text with what's in the register without yanking old stuff.
 vnoremap <leader>p "0p
@@ -351,9 +355,4 @@ vnoremap <leader>P "0P
 "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
 "   au WinLeave * setlocal nocursorline
 " augroup END
-
-" Use ripgrep if possible.
-if executable('rg')
-  set grepprg=rg\ --vimgrep\ --no-heading
-endif
 ]])
