@@ -24,9 +24,9 @@ require("lazy").setup({
   "tpope/vim-sleuth",
   -- Better status line
   "nvim-lualine/lualine.nvim",
-  -- Gblame
+  -- Git blame
   "tpope/vim-fugitive",
-  -- Gbrowse in GitHub
+  -- GBrowse in GitHub
   "tpope/vim-rhubarb",
   -- Easy commenting
   "numToStr/Comment.nvim",
@@ -150,7 +150,7 @@ vim.keymap.set("n", "<Enter>", vim.diagnostic.open_float)
 vim.keymap.set("n", "gj", vim.diagnostic.goto_next)
 vim.keymap.set("n", "gk", vim.diagnostic.goto_prev)
 
-vim.api.nvim_create_autocmd("LspAttach", {
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
     local opts = { buffer = ev.buf }
@@ -343,13 +343,31 @@ end
 -- Show extra whitespace at the end when not in Insert mode
 vim.opt.listchars = "trail:—"
 vim.cmd("match ErrorMsg /\\s\\+$/")
+
 vim.api.nvim_create_autocmd({ "InsertEnter" }, {
   callback = function()
     vim.opt.list = false
   end,
 })
+
 vim.api.nvim_create_autocmd({ "InsertLeave" }, {
   callback = function()
     vim.opt.list = true
+  end,
+})
+
+-- Highlight current line in active buffer
+vim.opt.cursorlineopt = "number"
+vim.cmd("highlight! link CursorLineNr WarningMsg")
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+  callback = function()
+    vim.opt_local.cursorline = true
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+  callback = function()
+    vim.opt_local.cursorline = false
   end,
 })
