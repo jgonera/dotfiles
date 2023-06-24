@@ -28,10 +28,6 @@ require("lazy").setup({
   "tpope/vim-fugitive",
   -- Gbrowse in GitHub
   "tpope/vim-rhubarb",
-  -- TODO: Can this be replaced by a simple config? Do I need it with
-  -- autoformatting?
-  -- Highlight trailing white space
-  "ntpeters/vim-better-whitespace",
   -- Easy commenting
   "numToStr/Comment.nvim",
   -- LSP and Autocompletion
@@ -140,9 +136,9 @@ vim.api.nvim_create_autocmd({ "BufWrite" }, {
 -- Nicer icons for diagnostics
 local signs = {
   Error = " ",
-  Warn = " ",
   Hint = " ",
   Info = " ",
+  Warn = " ",
 }
 
 for type, icon in pairs(signs) do
@@ -311,7 +307,7 @@ require("lualine").setup({
 vim.cmd.colorscheme("onedark")
 -- Alias ; for : (faster to type)
 vim.keymap.set({ "n", "v" }, ";", ":")
--- Don't wrap text by default. Leader+w to toggle.
+-- Don't wrap text by default. Leader+w to toggle
 vim.opt.wrap = false
 vim.keymap.set("n", "<leader>w", "<cmd>set nowrap!<cr>")
 -- When wrapping, break at a word boundary
@@ -344,11 +340,16 @@ if vim.fn.executable("rg") == 1 then
   vim.opt.grepprg = "rg --vimgrep --no-heading"
 end
 
-vim.cmd([[
-" Highlight current line.
-" augroup CursorLine
-"   au!
-"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-"   au WinLeave * setlocal nocursorline
-" augroup END
-]])
+-- Show extra whitespace at the end when not in Insert mode
+vim.opt.listchars = "trail:—"
+vim.cmd("match ErrorMsg /\\s\\+$/")
+vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+  callback = function()
+    vim.opt.list = false
+  end,
+})
+vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+  callback = function()
+    vim.opt.list = true
+  end,
+})
