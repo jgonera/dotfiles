@@ -44,9 +44,8 @@ require("lazy").setup({
   -- Autoformatting and linting
   "jose-elias-alvarez/null-ls.nvim",
   "lukas-reineke/lsp-format.nvim",
-  -- TODO: Do I use this?
   -- Easier marks
-  "kshenoy/vim-signature",
+  "chentoast/marks.nvim",
 })
 
 require("onedark").setup({
@@ -215,6 +214,7 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("lsp-format").setup()
+require("marks").setup()
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
