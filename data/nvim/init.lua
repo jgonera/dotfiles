@@ -60,6 +60,7 @@ require("onedark").setup({
   },
 })
 
+vim.cmd.colorscheme("onedark")
 -- Enable mouse in terminal
 vim.opt.mouse = "a"
 -- Don't time out on mappings
@@ -86,7 +87,131 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 -- Change the leader key from \ to ,
 vim.g.mapleader = ","
+-- Alias ; for : (faster to type)
+vim.keymap.set({ "n", "v" }, ";", ":")
+-- Don't wrap text by default. Leader+w to toggle
+vim.opt.wrap = false
+vim.keymap.set("n", "<leader>w", "<cmd>set nowrap!<cr>")
+-- When wrapping, break at a word boundary
+vim.opt.linebreak = true
+-- Close buffer (without removing split)
+vim.keymap.set("n", "<leader>d", "<cmd>b#<bar>bd#<cr>")
+-- Folding
+vim.opt.foldmethod = "indent"
+-- Ignore case when searching (and, unfortunately, replacing?)
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+-- Clear search highlight after ESC in Normal mode
+vim.keymap.set("n", "<Esc>", "<cmd>noh<cr>")
+-- Easier navigation between splits
+vim.keymap.set("n", "<C-J>", "<C-W><C-J>")
+vim.keymap.set("n", "<C-K>", "<C-W><C-K>")
+vim.keymap.set("n", "<C-L>", "<C-W><C-L>")
+vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
 
+-- Show diagnostics only after save
+vim.api.nvim_create_autocmd({ "BufNew", "InsertEnter" }, {
+  callback = function(args)
+    vim.diagnostic.disable(args.buf)
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufWrite" }, {
+  callback = function(args)
+    vim.diagnostic.enable(args.buf)
+  end,
+})
+
+-- Nicer icons for diagnostics
+local signs = {
+  Error = " ",
+  Hint = " ",
+  Info = " ",
+  Warn = " ",
+}
+
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+-- Diagnostics and LSP shortcuts
+vim.keymap.set("n", "<Enter>", vim.diagnostic.open_float)
+vim.keymap.set("n", "gj", vim.diagnostic.goto_next)
+vim.keymap.set("n", "gk", vim.diagnostic.goto_prev)
+
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    local opts = { buffer = ev.buf }
+
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<Enter>", function()
+      local current_lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+
+      if #vim.diagnostic.get(0, { lnum = current_lnum }) > 0 then
+        vim.diagnostic.open_float()
+      else
+        vim.lsp.buf.hover()
+      end
+    end, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  end,
+})
+
+-- Use system clipboard + shortcut for relative path of current file into
+-- clipboard
+if vim.fn.has("macunix") then
+  vim.opt.clipboard = "unnamed"
+  vim.keymap.set("n", "<leader>rp", '<cmd>let @*=expand("%")<cr>')
+elseif vim.fn.has("unix") then
+  vim.opt.clipboard = "unnamedplus"
+  vim.keymap.set("n", "<leader>rp", '<cmd>let @+=expand("%")<cr>')
+end
+
+-- Use ripgrep if possible
+if vim.fn.executable("rg") == 1 then
+  vim.opt.grepprg = "rg --vimgrep --no-heading"
+end
+
+-- Show extra whitespace at the end when not in Insert mode
+vim.opt.listchars = "trail:—"
+vim.cmd("match ErrorMsg /\\s\\+$/")
+
+vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+  callback = function()
+    vim.opt.list = false
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+  callback = function()
+    vim.opt.list = true
+  end,
+})
+
+-- Highlight current line in active buffer
+vim.opt.cursorlineopt = "number"
+vim.api.nvim_set_hl(0, "CursorLineNr", { link = "WarningMsg" })
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+  callback = function()
+    vim.opt_local.cursorline = true
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+  callback = function()
+    vim.opt_local.cursorline = false
+  end,
+})
+
+-- Plugins
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("lsp-format").setup()
@@ -119,63 +244,6 @@ null_ls.setup({
     null_ls.builtins.formatting.terraform_fmt,
   },
 })
-
--- Show diagnostics only after save
-vim.api.nvim_create_autocmd({ "BufNew", "InsertEnter" }, {
-  callback = function(args)
-    vim.diagnostic.disable(args.buf)
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufWrite" }, {
-  callback = function(args)
-    vim.diagnostic.enable(args.buf)
-  end,
-})
-
--- Nicer icons for diagnostics
-local signs = {
-  Error = " ",
-  Hint = " ",
-  Info = " ",
-  Warn = " ",
-}
-
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
-vim.keymap.set("n", "<Enter>", vim.diagnostic.open_float)
-vim.keymap.set("n", "gj", vim.diagnostic.goto_next)
-vim.keymap.set("n", "gk", vim.diagnostic.goto_prev)
-
-vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-  callback = function(ev)
-    local opts = { buffer = ev.buf }
-
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "<Enter>", function()
-      local current_lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-
-      if #vim.diagnostic.get(0, { lnum = current_lnum }) > 0 then
-        vim.diagnostic.open_float()
-      else
-        vim.lsp.buf.hover()
-      end
-    end, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-  end,
-})
-
--- Clear search highlight after ESC in Normal mode
-vim.keymap.set("n", "<Esc>", "<cmd>noh<cr>")
 
 -- Treesitter
 require("nvim-treesitter.configs").setup({
@@ -287,7 +355,31 @@ fzf_lua.setup({
   },
 })
 
+vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "WinSeparator" })
 vim.keymap.set("n", "<leader>e", fzf_lua.files)
+
+vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
+  callback = function(args)
+    if args.file == ":" then
+      vim.keymap.set("c", "<C-k>", function()
+        fzf_lua.command_history({ fzf_opts = { ["--layout"] = "default" } })
+      end)
+    elseif args.file == "/" or args.file == "?" then
+      vim.keymap.set("c", "<C-k>", function()
+        -- Close command line mode first, otherwise it conflicts with
+        -- fzf_lua.search_history
+        vim.api.nvim_feedkeys("<Esc>", "t", true)
+        fzf_lua.search_history({ fzf_opts = { ["--layout"] = "default" } })
+      end)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "CmdlineLeave" }, {
+  callback = function()
+    vim.keymap.del("c", "<C-k>")
+  end,
+})
 
 -- lualine
 require("lualine").setup({
@@ -302,72 +394,4 @@ require("lualine").setup({
     lualine_y = { "progress" },
     lualine_z = { "location" },
   },
-})
-
-vim.cmd.colorscheme("onedark")
--- Alias ; for : (faster to type)
-vim.keymap.set({ "n", "v" }, ";", ":")
--- Don't wrap text by default. Leader+w to toggle
-vim.opt.wrap = false
-vim.keymap.set("n", "<leader>w", "<cmd>set nowrap!<cr>")
--- When wrapping, break at a word boundary
-vim.opt.linebreak = true
--- Close buffer (without removing split)
-vim.keymap.set("n", "<leader>d", "<cmd>b#<bar>bd#<cr>")
--- Folding
-vim.opt.foldmethod = "indent"
--- Ignore case when searching (and, unfortunately, replacing?)
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
--- Easier navigation between splits
-vim.keymap.set("n", "<C-J>", "<C-W><C-J>")
-vim.keymap.set("n", "<C-K>", "<C-W><C-K>")
-vim.keymap.set("n", "<C-L>", "<C-W><C-L>")
-vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
-
--- Use system clipboard + shortcut for relative path of current file into
--- clipboard
-if vim.fn.has("macunix") then
-  vim.opt.clipboard = "unnamed"
-  vim.keymap.set("n", "<leader>rp", '<cmd>let @*=expand("%")<cr>')
-elseif vim.fn.has("unix") then
-  vim.opt.clipboard = "unnamedplus"
-  vim.keymap.set("n", "<leader>rp", '<cmd>let @+=expand("%")<cr>')
-end
-
--- Use ripgrep if possible
-if vim.fn.executable("rg") == 1 then
-  vim.opt.grepprg = "rg --vimgrep --no-heading"
-end
-
--- Show extra whitespace at the end when not in Insert mode
-vim.opt.listchars = "trail:—"
-vim.cmd("match ErrorMsg /\\s\\+$/")
-
-vim.api.nvim_create_autocmd({ "InsertEnter" }, {
-  callback = function()
-    vim.opt.list = false
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "InsertLeave" }, {
-  callback = function()
-    vim.opt.list = true
-  end,
-})
-
--- Highlight current line in active buffer
-vim.opt.cursorlineopt = "number"
-vim.cmd("highlight! link CursorLineNr WarningMsg")
-
-vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
-  callback = function()
-    vim.opt_local.cursorline = true
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "WinLeave" }, {
-  callback = function()
-    vim.opt_local.cursorline = false
-  end,
 })
