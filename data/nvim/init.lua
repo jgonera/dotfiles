@@ -374,7 +374,10 @@ vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
         -- Close command line mode first, otherwise it conflicts with
         -- fzf_lua.search_history
         vim.api.nvim_feedkeys("<Esc>", "t", true)
-        fzf_lua.search_history({ fzf_opts = { ["--layout"] = "default" } })
+        fzf_lua.search_history({
+          reverse_search = args.file == "?",
+          fzf_opts = { ["--layout"] = "default" },
+        })
       end)
     end
   end,
