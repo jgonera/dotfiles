@@ -24,10 +24,10 @@ require("lazy").setup({
   "tpope/vim-sleuth",
   -- Better status line
   "nvim-lualine/lualine.nvim",
-  -- Git blame
+  -- Git integration (:Git blame, :GBrowse, git signs)
   "tpope/vim-fugitive",
-  -- GBrowse in GitHub
   "tpope/vim-rhubarb",
+  "lewis6991/gitsigns.nvim",
   -- Easy commenting
   "numToStr/Comment.nvim",
   -- LSP and Autocompletion
@@ -77,8 +77,6 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
--- Always show marks/sign column
-vim.opt.signcolumn = "number"
 -- Don't fold by default
 vim.opt.foldenable = false
 -- Prevent cluttering up working directory with ~ and .swp files
@@ -215,6 +213,7 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("lsp-format").setup()
 require("marks").setup()
+require("gitsigns").setup()
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
