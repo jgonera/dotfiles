@@ -238,7 +238,9 @@ null_ls.setup({
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.eslint,
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.prettier.with({
+      extra_filetypes = { "sql" },
+    }),
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.terraform_fmt,
   },
