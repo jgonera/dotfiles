@@ -346,7 +346,9 @@ fzf_lua.setup({
     fullscreen = true,
     preview = {
       flip_columns = 180,
+      horizontal = "right:50%",
       title = false,
+      vertical = "down:50%",
     },
   },
   diagnostics = {
