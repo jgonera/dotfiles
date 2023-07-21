@@ -121,10 +121,10 @@ vim.api.nvim_create_autocmd({ "BufWrite" }, {
 
 -- Nicer icons for diagnostics
 local signs = {
-  Error = " ",
-  Hint = " ",
-  Info = " ",
-  Warn = " ",
+  Error = "󰅚",
+  Hint = "󰌶",
+  Info = "󰋽",
+  Warn = "󰀪",
 }
 
 for type, icon in pairs(signs) do
