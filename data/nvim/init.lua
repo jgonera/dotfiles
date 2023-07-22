@@ -41,6 +41,8 @@ require("lazy").setup({
   "saadparwaiz1/cmp_luasnip",
   { "williamboman/mason.nvim", build = ":MasonUpdate" },
   "williamboman/mason-lspconfig.nvim",
+  -- Code navigation
+  "stevearc/aerial.nvim",
   -- Autoformatting and linting
   "jose-elias-alvarez/null-ls.nvim",
   "lukas-reineke/lsp-format.nvim",
@@ -392,6 +394,39 @@ vim.api.nvim_create_autocmd({ "CmdlineLeave" }, {
   end,
 })
 
+-- aerial
+require("aerial").setup({
+  attach_mode = "global",
+  close_on_select = true,
+  layout = {
+    default_direction = "right",
+    placement = "edge",
+  },
+  nerd_font = true,
+  on_attach = function(bufnr)
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+
+local fzf_aerial = function()
+  local labels = require("aerial.fzf").get_labels()
+
+  if #labels > 0 then
+    fzf_lua.fzf_exec(labels, {
+      actions = {
+        ["default"] = function(a)
+          print(a[1])
+          require("aerial.fzf").goto_symbol(a[1])
+        end,
+      },
+    })
+  end
+end
+
+-- vim.keymap.set("n", "<leader>a", fzf_aerial)
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle<CR>")
+
 -- lualine
 require("lualine").setup({
   options = {
@@ -400,7 +435,7 @@ require("lualine").setup({
   sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch", "diagnostics" },
-    lualine_c = { { "filename", path = 1 } },
+    lualine_c = { { "filename", path = 1, separator = "⟩" }, "aerial" },
     lualine_x = { "encoding" },
     lualine_y = { "progress" },
     lualine_z = { "location" },
