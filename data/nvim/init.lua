@@ -217,7 +217,12 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("lsp-format").setup()
 require("marks").setup()
-require("gitsigns").setup()
+require("gitsigns").setup({
+  attach_to_untracked = false,
+  signs = {
+    untracked = { text = "·" },
+  },
+})
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
