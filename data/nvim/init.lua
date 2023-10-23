@@ -234,6 +234,16 @@ require("mason-lspconfig").setup_handlers({
   end,
 })
 
+require("lspconfig").eslint.setup({
+  capabilities = capabilities,
+  on_attach = function(_client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end,
+})
+
 require("Comment").setup()
 
 local null_ls = require("null-ls")
@@ -241,13 +251,11 @@ null_ls.setup({
   on_attach = require("lsp-format").on_attach,
   sources = {
     null_ls.builtins.diagnostics.actionlint,
-    null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.flake8,
     null_ls.builtins.diagnostics.selene,
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.eslint,
     null_ls.builtins.formatting.prettier.with({
       extra_filetypes = { "sql" },
     }),
