@@ -383,6 +383,7 @@ vim.keymap.set("n", "<leader>g", fzf_lua.live_grep_native)
 vim.keymap.set("v", "<leader>g", fzf_lua.grep_visual)
 vim.keymap.set("n", "<leader>*", fzf_lua.grep_cword)
 vim.keymap.set("n", "<leader>m", fzf_lua.marks)
+vim.keymap.set("n", "<leader>a", fzf_lua.lsp_code_actions)
 
 vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
   callback = function(args)
@@ -440,8 +441,8 @@ local fzf_aerial = function()
   end
 end
 
--- vim.keymap.set("n", "<leader>a", fzf_aerial)
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle<CR>")
+-- vim.keymap.set("n", "<leader>c", fzf_aerial)
+vim.keymap.set("n", "<leader>c", "<cmd>AerialToggle<CR>")
 
 -- lualine
 require("lualine").setup({
