@@ -4,6 +4,9 @@ export EDITOR=nvim
 # Fix colors in fd
 export LS_COLORS=
 
+# Don't add commands to history if they start with a space
+setopt histignorespace
+
 # zsh-completions
 autoload -Uz compinit && compinit
 
