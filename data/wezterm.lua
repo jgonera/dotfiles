@@ -24,16 +24,4 @@ config.window_padding = {
   bottom = 0,
 }
 
-wezterm.on("format-tab-title", function(tab)
-  local pane = tab.active_pane
-  local tab_title = pane.title
-  local cwd = string.gsub(pane.current_working_dir, "(.*/)(.*)", "%2")
-
-  if tab.tab_title and #tab.tab_title > 0 then
-    tab_title = tab.tab_title
-  end
-
-  return " " .. tab.tab_index + 1 .. ": " .. cwd .. " — " .. tab_title .. " "
-end)
-
 return config
