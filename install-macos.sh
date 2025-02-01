@@ -24,7 +24,7 @@ echo "Installing Homebrew packages..."
 brew install --cask alacritty
 brew install --cask wezterm
 brew install bat
-brew install exa
+brew install eza
 brew install fd
 brew install fzf
 brew install git
