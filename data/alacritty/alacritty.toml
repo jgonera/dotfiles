@@ -13,3 +13,6 @@ italic.family = "Hack"
 bold_italic.family = "Hack"
 size = 14.0
 offset.y = 2
+
+[window]
+startup_mode = "Maximized"
