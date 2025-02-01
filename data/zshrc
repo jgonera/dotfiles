@@ -1,6 +1,13 @@
 export PATH="$HOME/bin:$PATH"
 export EDITOR=nvim
 
+# https://wezfurlong.org/wezterm/faq.html#some-glyphs-look-messed-up-why-is-that
+export LANG=en_US.UTF-8
+# You don't strictly need this collation, but most technical people
+# probably want C collation for sane results
+export LC_COLLATE=C
+setopt COMBINING_CHARS
+
 # Fix colors in fd
 export LS_COLORS=
 

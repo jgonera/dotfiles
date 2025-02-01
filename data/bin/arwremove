@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+for file in *; do
+  [[ $file = *.JPG ]] && continue  # skip .JPG files
+  jpg_file=${file%.*}.JPG
+  [[ -s $jpg_file ]] || osascript -e "tell application \"Finder\" to delete POSIX file \"${PWD}/${file}\""
+done
