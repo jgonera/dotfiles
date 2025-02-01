@@ -1,0 +1,15 @@
+[general]
+import = [
+  "~/.config/alacritty/themes/themes/{theme}.toml"
+]
+
+[colors.primary]
+background = "#000000"
+
+[font]
+normal.family = "Hack"
+bold.family = "Hack"
+italic.family = "Hack"
+bold_italic.family = "Hack"
+size = 14.0
+offset.y = 2

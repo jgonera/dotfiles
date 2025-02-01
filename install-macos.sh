@@ -9,6 +9,7 @@ echo "Creating symlinks..."
 mkdir ~/.config || true
 mkdir ~/.config/bat || true
 
+ln -sfn "$DOTFILES_DIR/data/alacritty" ~/.config/alacritty
 ln -sfn "$DOTFILES_DIR/data/bat.conf" ~/.config/bat/config
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
 ln -sfn "$DOTFILES_DIR/data/gitconfig" ~/.gitconfig
@@ -20,6 +21,7 @@ ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 
 echo "Installing Homebrew packages..."
 
+brew install --cask alacritty
 brew install --cask wezterm
 brew install bat
 brew install exa
