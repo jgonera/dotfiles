@@ -18,6 +18,12 @@ require("lazy").setup({
   "nvim-lua/plenary.nvim",
   -- Syntax highlighting
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  -- MDX syntax highlighting
+  {
+    "davidmh/mdx.nvim",
+    config = true,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
   -- Fuzzy opener
   "ibhagwan/fzf-lua",
   -- Automatic indentation
@@ -289,7 +295,7 @@ null_ls.setup({
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.prettier.with({
-      extra_filetypes = { "astro", "sql" },
+      extra_filetypes = { "astro", "mdx", "sql" },
     }),
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.terraform_fmt,
