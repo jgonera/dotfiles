@@ -40,7 +40,7 @@ NEWLINE=$'\n'
 PROMPT="${NEWLINE}%F{244}%* %~ \$vcs_info_msg_0_%(?..%F{red}%? )%F{default}\$ "
 
 # Useful aliases and functions
-alias ll="ls -alFG"
+alias ll="eza -alF"
 alias tree="tree -I node_modules"
 
 # Source other files if they exist
