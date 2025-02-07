@@ -11,8 +11,8 @@ normal.family = "Hack Nerd Font"
 bold.family = "Hack Nerd Font"
 italic.family = "Hack Nerd Font"
 bold_italic.family = "Hack Nerd Font"
-size = 14.0
-offset.y = 3
+size = 14.5
+offset.y = 2
 
 [window]
 padding = { x = 4, y = 0 }
