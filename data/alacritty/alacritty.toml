@@ -1,6 +1,6 @@
 [general]
 import = [
-  "~/.config/alacritty/themes/themes/{theme}.toml"
+  "~/.config/alacritty/themes/one_dark.toml"
 ]
 
 [colors.primary]
@@ -12,7 +12,8 @@ bold.family = "Hack Nerd Font"
 italic.family = "Hack Nerd Font"
 bold_italic.family = "Hack Nerd Font"
 size = 14.0
-offset.y = 2
+offset.y = 3
 
 [window]
+padding = { x = 4, y = 0 }
 startup_mode = "Maximized"
