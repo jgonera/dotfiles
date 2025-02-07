@@ -68,7 +68,7 @@ require("lazy").setup({
 })
 
 require("onedark").setup({
-  style = "warm",
+  style = "dark",
   transparent = true,
   code_style = {
     comments = "none",
