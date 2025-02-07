@@ -26,7 +26,18 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # prompt
 autoload -Uz colors && colors
-PROMPT="%F{244}%* %~ %{$reset_color%}\$ "
+autoload -Uz vcs_info
+
+precmd_vcs_info() {
+  vcs_info
+}
+precmd_functions+=( precmd_vcs_info )
+zstyle ':vcs_info:git:*' formats '%F{yellow}%b '
+
+setopt PROMPT_SUBST
+
+NEWLINE=$'\n'
+PROMPT="${NEWLINE}%F{244}%* %~ \$vcs_info_msg_0_%(?..%F{red}%? )%{$reset_color%}\$ "
 
 # Useful aliases and functions
 alias ll="ls -alFG"
@@ -69,11 +80,7 @@ function preexec() {
   set_terminal_title "$1"
 }
 
-# Post-command hook to reset the terminal title after each command
-function precmd() {
-  # Reset the terminal title to the current directory
-  set_terminal_title
-}
+precmd_functions+=( set_terminal_title )
 
 # Call the function to set the initial title when the shell starts
 set_terminal_title
