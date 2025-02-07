@@ -40,4 +40,7 @@ $(brew --prefix)/opt/fzf/install
 sudo chown -R "$USER" /usr/local/share/zsh
 sudo chmod -R 755 /usr/local/share/zsh
 
+# https://github.com/alacritty/alacritty/issues/4616#issuecomment-1236413444
+defaults write -g AppleFontSmoothing -int 0
+
 echo "Done."
