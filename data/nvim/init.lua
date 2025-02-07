@@ -417,7 +417,7 @@ fzf_lua.setup({
 vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "WinSeparator" })
 vim.keymap.set("n", "<leader>e", fzf_lua.files)
 vim.keymap.set("n", "<leader>f", fzf_lua.lgrep_curbuf)
-vim.keymap.set("n", "<leader>g", fzf_lua.live_grep_native)
+vim.keymap.set("n", "<leader>g", fzf_lua.grep_project)
 vim.keymap.set("v", "<leader>g", fzf_lua.grep_visual)
 vim.keymap.set("n", "<leader>*", fzf_lua.grep_cword)
 vim.keymap.set("n", "<leader>m", fzf_lua.marks)
