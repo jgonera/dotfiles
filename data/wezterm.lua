@@ -11,7 +11,7 @@ config.colors = {
   background = "black",
 }
 config.font = wezterm.font("Hack")
-config.font_size = 14
+config.font_size = 16
 config.line_height = 1.1
 config.use_fancy_tab_bar = false
 config.tab_max_width = 32
