@@ -12,7 +12,7 @@ mkdir ~/.config/bat || true
 ln -sfn "$DOTFILES_DIR/data/alacritty" ~/.config/alacritty
 ln -sfn "$DOTFILES_DIR/data/bat.conf" ~/.config/bat/config
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
-ln -sfn "$DOTFILES_DIR/data/gitconfig" ~/.gitconfig
+ln -sfn "$DOTFILES_DIR/data/git" ~/.config/git
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
 ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
