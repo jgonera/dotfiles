@@ -24,25 +24,14 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-# prompt
-autoload -Uz colors && colors
-autoload -Uz vcs_info
-
-precmd_vcs_info() {
-  vcs_info
-}
-precmd_functions+=( precmd_vcs_info )
-zstyle ':vcs_info:git:*' formats '%F{yellow}%b '
-
-setopt PROMPT_SUBST
-
-NEWLINE=$'\n'
-PROMPT="${NEWLINE}%F{244}%~ \$vcs_info_msg_0_%(?..%F{red}%? )%F{default}\$ "
-
 # Useful aliases and functions
 alias h="fc -liD"
 alias ll="eza -alF"
 alias tree="eza --tree --ignore-glob node_modules"
+
+local ZSHRC_DIR="$(dirname $(readlink $(print -P %N)))"
+export FPATH="$ZSHRC_DIR/zsh:$FPATH"
+autoload shrink_path
 
 # Source other files if they exist
 while read -r file
@@ -64,14 +53,29 @@ function task() {
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
 
+# prompt
+autoload -Uz colors && colors
+autoload -Uz vcs_info
+
+precmd_vcs_info() {
+  vcs_info
+}
+precmd_functions+=( precmd_vcs_info )
+zstyle ':vcs_info:git:*' formats '%F{yellow}%b '
+
+setopt PROMPT_SUBST
+
+NEWLINE=$'\n'
+PROMPT="${NEWLINE}%F{244}%~ \$vcs_info_msg_0_%(?..%F{red}%? )%F{default}\$ "
+
 # Function to set terminal title
 function set_terminal_title() {
   if [[ -n "$1" ]]; then
     # When a process is running, show the command and the current directory
-    print -Pn "\e]0;%~ • $1\a"
+    print -Pn "\e]0;$(shrink_path -f) • $1\a"
   else
     # Default title showing only the current directory
-    print -Pn "\e]0;%~\a"
+    print -Pn "\e]0;$(shrink_path -f)\a"
   fi
 }
 
