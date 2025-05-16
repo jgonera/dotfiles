@@ -17,18 +17,19 @@ ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
 ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
 ln -sfn "$DOTFILES_DIR/data/wezterm.lua" ~/.wezterm.lua
+ln -sfn "$DOTFILES_DIR/data/zprofile" ~/.zprofile
 ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 
 echo "Installing Homebrew..."
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo >> ~/.zprofile
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 echo "Installing Homebrew packages..."
 
 brew install --cask alacritty
+brew install --cask font-hack
+brew install --cask karabiner-elements
 brew install --cask keepassxc
 brew install --cask wezterm
 brew install bat
