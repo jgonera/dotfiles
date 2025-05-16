@@ -10,6 +10,7 @@ mkdir ~/.config || true
 mkdir ~/.config/bat || true
 
 ln -sfn "$DOTFILES_DIR/data/alacritty" ~/.config/alacritty
+ln -sfn "$DOTFILES_DIR/data/amethyst.yml" ~/.amethyst.yml
 ln -sfn "$DOTFILES_DIR/data/bat.conf" ~/.config/bat/config
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
 ln -sfn "$DOTFILES_DIR/data/git" ~/.config/git
@@ -28,6 +29,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 echo "Installing Homebrew packages..."
 
 brew install --cask alacritty
+brew install --cask amethyst
 brew install --cask font-hack
 brew install --cask obsidian
 brew install --cask karabiner-elements
