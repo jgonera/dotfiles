@@ -8,6 +8,7 @@ echo "Creating symlinks..."
 
 mkdir ~/.config || true
 mkdir ~/.config/bat || true
+mkdir -p ~/Library/Preferences/org.videolan.vlc || true
 
 ln -sfn "$DOTFILES_DIR/data/alacritty" ~/.config/alacritty
 ln -sfn "$DOTFILES_DIR/data/amethyst.yml" ~/.amethyst.yml
@@ -17,6 +18,7 @@ ln -sfn "$DOTFILES_DIR/data/git" ~/.config/git
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
 ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
+ln -sfn "$DOTFILES_DIR/data/vlcrc" ~/Library/Preferences/org.videolan.vlc/vlcrc
 ln -sfn "$DOTFILES_DIR/data/wezterm.lua" ~/.wezterm.lua
 ln -sfn "$DOTFILES_DIR/data/zprofile" ~/.zprofile
 ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
