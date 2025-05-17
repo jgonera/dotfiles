@@ -44,6 +44,7 @@ brew install fd
 brew install fzf
 brew install git
 brew install git-delta
+brew install mise
 brew install nvim
 brew install ripgrep
 brew install syncthing
