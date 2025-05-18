@@ -282,6 +282,7 @@ null_ls.setup({
       extra_filetypes = { "astro", "mdx", "sql" },
     }),
     -- null_ls.builtins.formatting.ruff,
+    null_ls.builtins.formatting.stylelint,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.terraform_fmt,
   },
