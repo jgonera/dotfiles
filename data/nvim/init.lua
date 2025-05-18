@@ -279,6 +279,8 @@ null_ls.setup({
     null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.prettier.with({
+      -- Enable .ts config files
+      env = { NODE_OPTIONS = "--experimental-strip-types" },
       extra_filetypes = { "astro", "mdx", "sql" },
     }),
     -- null_ls.builtins.formatting.ruff,
