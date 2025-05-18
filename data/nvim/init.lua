@@ -144,17 +144,19 @@ vim.api.nvim_create_autocmd({ "BufWrite" }, {
 })
 
 -- Nicer icons for diagnostics
-local signs = {
-  Error = "󰅚",
-  Hint = "󰌶",
-  Info = "󰋽",
-  Warn = "󰀪",
-}
-
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "󰅚",
+      [vim.diagnostic.severity.HINT] = "󰌶",
+      [vim.diagnostic.severity.INFO] = "󰋽",
+      [vim.diagnostic.severity.WARN] = "󰀪",
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "ErrorMsg",
+    },
+  },
+})
 
 -- Diagnostics and LSP shortcuts
 vim.keymap.set("n", "<Enter>", vim.diagnostic.open_float)
