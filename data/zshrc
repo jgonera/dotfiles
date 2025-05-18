@@ -1,4 +1,4 @@
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH:$HOME/Library/Android/sdk/platform-tools"
 export EDITOR=nvim
 
 # https://wezfurlong.org/wezterm/faq.html#some-glyphs-look-messed-up-why-is-that
