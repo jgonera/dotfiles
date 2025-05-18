@@ -37,8 +37,8 @@ require("lazy").setup({
   -- Easy commenting
   "numToStr/Comment.nvim",
   -- LSP and Autocompletion
-  "mason-org/mason.nvim",
-  "mason-org/mason-lspconfig.nvim",
+  -- "mason-org/mason.nvim",
+  -- "mason-org/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   {
     "pmizio/typescript-tools.nvim",
@@ -236,45 +236,34 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 })
 
 -- LSP
-require("mason").setup()
+vim.lsp.enable({ "eslint" })
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local lspconfig = require("lspconfig")
+local eslint_on_attach = vim.lsp.config.eslint.on_attach
 
-lspconfig.eslint.setup({
-  capabilities = capabilities,
-  on_attach = function(_client, bufnr)
+vim.lsp.config("eslint", {
+  on_attach = function(client, bufnr)
+    eslint_on_attach(client)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
-      command = "EslintFixAll",
+      command = "LspEslintFixAll",
     })
   end,
 })
 
-require("mason-lspconfig").setup({
-  -- ensure_installed = {
-  --   "astro",
-  --   "eslint",
-  --   -- "ts_ls", // Using pmizio/typescript-tools.nvim for now
-  -- },
-  handlers = {
-    function(server)
-      lspconfig[server].setup({
-        capabilities = capabilities,
-      })
-    end,
-    ["tsserver"] = function()
-      lspconfig.tsserver.setup({
-        capabilities = capabilities,
-        settings = {
-          completions = {
-            completeFunctionCalls = true,
-          },
-        },
-      })
-    end,
-  },
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+vim.lsp.config("*", {
+  capabilities = capabilities,
 })
+
+-- require("mason").setup()
+-- require("mason-lspconfig").setup({
+--   ensure_installed = {
+--     "astro",
+--     "eslint",
+--     -- "ts_ls", // Using pmizio/typescript-tools.nvim for now
+--   },
+-- })
 
 require("lsp-format").setup()
 
