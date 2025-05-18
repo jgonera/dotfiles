@@ -24,6 +24,10 @@ ln -sfn "$DOTFILES_DIR/data/wezterm.lua" ~/.wezterm.lua
 ln -sfn "$DOTFILES_DIR/data/zprofile" ~/.zprofile
 ln -sfn "$DOTFILES_DIR/data/zshrc" ~/.zshrc
 
+echo "Installing Rosetta..."
+
+softwareupdate --install-rosetta
+
 echo "Installing Homebrew..."
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -58,9 +62,13 @@ brew install selene
 brew install stylua
 brew install syncthing
 
-echo "Installing Node.js language servers..."
+echo "Installing additional dev tools..."
 
+# Language servers
 npm install --global @astrojs/language-server vscode-langservers-extracted
+# Workaround for XCode not seeing mise-installed tools
+sudo ln -s ~/.local/share/mise/shims/node /usr/local/bin/node
+sudo ln -s ~/.local/share/mise/shims/npm /usr/local/bin/npm
 
 echo "Performing additional configuration..."
 
