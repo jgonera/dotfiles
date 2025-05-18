@@ -1,5 +1,6 @@
 [tools]
 node = "lts"
+rust = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = []
