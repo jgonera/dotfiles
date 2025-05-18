@@ -34,12 +34,15 @@ echo "Installing Homebrew packages..."
 brew install --cask alacritty
 brew install --cask amethyst
 brew install --cask android-studio
+brew install --cask firefox
 brew install --cask font-hack
 brew install --cask obsidian
 brew install --cask karabiner-elements
 brew install --cask keepassxc
+brew install --cask microsoft-teams
 brew install --cask vlc
 brew install --cask wezterm
+brew install --cask whatsapp
 brew install actionlint
 brew install bat
 brew install cocoapods
