@@ -37,7 +37,14 @@ require("lazy").setup({
   -- Easy commenting
   "numToStr/Comment.nvim",
   -- LSP and Autocompletion
+  "mason-org/mason.nvim",
+  "mason-org/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
   "hrsh7th/cmp-nvim-lsp",
   "hrsh7th/cmp-buffer",
   "hrsh7th/cmp-path",
@@ -45,12 +52,10 @@ require("lazy").setup({
   "hrsh7th/nvim-cmp",
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
-  { "williamboman/mason.nvim", build = ":MasonUpdate" },
-  "williamboman/mason-lspconfig.nvim",
   -- Code navigation
   "stevearc/aerial.nvim",
   -- Autoformatting and linting
-  "jose-elias-alvarez/null-ls.nvim",
+  "nvimtools/none-ls.nvim",
   "lukas-reineke/lsp-format.nvim",
   -- Easier marks
   "chentoast/marks.nvim",
@@ -128,13 +133,13 @@ vim.keymap.set("n", "<C-H>", "<C-W><C-H>")
 -- Show diagnostics only after save
 vim.api.nvim_create_autocmd({ "BufNew", "InsertEnter" }, {
   callback = function(args)
-    vim.diagnostic.disable(args.buf)
+    vim.diagnostic.enable(false, { bufnr = args.buf })
   end,
 })
 
 vim.api.nvim_create_autocmd({ "BufWrite" }, {
   callback = function(args)
-    vim.diagnostic.enable(args.buf)
+    vim.diagnostic.enable(true, { bufnr = args.buf })
   end,
 })
 
@@ -159,6 +164,9 @@ vim.keymap.set("n", "gk", vim.diagnostic.goto_prev)
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    require("lsp-format").on_attach(client, ev.buf)
+
     local opts = { buffer = ev.buf }
 
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
@@ -227,10 +235,69 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
   end,
 })
 
--- Plugins
+-- LSP
 require("mason").setup()
-require("mason-lspconfig").setup()
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local lspconfig = require("lspconfig")
+
+lspconfig.eslint.setup({
+  capabilities = capabilities,
+  on_attach = function(_client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end,
+})
+
+require("mason-lspconfig").setup({
+  -- ensure_installed = {
+  --   "astro",
+  --   "eslint",
+  --   -- "ts_ls", // Using pmizio/typescript-tools.nvim for now
+  -- },
+  handlers = {
+    function(server)
+      lspconfig[server].setup({
+        capabilities = capabilities,
+      })
+    end,
+    ["tsserver"] = function()
+      lspconfig.tsserver.setup({
+        capabilities = capabilities,
+        settings = {
+          completions = {
+            completeFunctionCalls = true,
+          },
+        },
+      })
+    end,
+  },
+})
+
 require("lsp-format").setup()
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.actionlint,
+    -- null_ls.builtins.diagnostics.ruff,
+    null_ls.builtins.diagnostics.selene,
+    null_ls.builtins.diagnostics.stylelint,
+    null_ls.builtins.diagnostics.terraform_validate,
+    null_ls.builtins.formatting.prettier.with({
+      extra_filetypes = { "astro", "mdx", "sql" },
+    }),
+    -- null_ls.builtins.formatting.ruff,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.terraform_fmt,
+  },
+})
+
+-- Other plugins
+
 require("marks").setup()
 require("gitsigns").setup({
   attach_to_untracked = false,
@@ -262,45 +329,7 @@ require("gitsigns").setup({
   end,
 })
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-require("mason-lspconfig").setup_handlers({
-  function(server_name)
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-    })
-  end,
-})
-
-require("lspconfig").eslint.setup({
-  capabilities = capabilities,
-  on_attach = function(_client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-})
-
 require("Comment").setup()
-
-local null_ls = require("null-ls")
-null_ls.setup({
-  on_attach = require("lsp-format").on_attach,
-  sources = {
-    null_ls.builtins.diagnostics.actionlint,
-    null_ls.builtins.diagnostics.ruff,
-    null_ls.builtins.diagnostics.selene,
-    null_ls.builtins.diagnostics.stylelint,
-    null_ls.builtins.diagnostics.terraform_validate,
-    null_ls.builtins.formatting.prettier.with({
-      extra_filetypes = { "astro", "mdx", "sql" },
-    }),
-    null_ls.builtins.formatting.ruff,
-    null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.terraform_fmt,
-  },
-})
 
 -- Treesitter
 require("nvim-treesitter.configs").setup({
@@ -464,22 +493,6 @@ require("aerial").setup({
   end,
 })
 
-local fzf_aerial = function()
-  local labels = require("aerial.fzf").get_labels()
-
-  if #labels > 0 then
-    fzf_lua.fzf_exec(labels, {
-      actions = {
-        ["default"] = function(a)
-          print(a[1])
-          require("aerial.fzf").goto_symbol(a[1])
-        end,
-      },
-    })
-  end
-end
-
--- vim.keymap.set("n", "<leader>c", fzf_aerial)
 vim.keymap.set("n", "<leader>c", "<cmd>AerialToggle<CR>")
 
 -- lualine

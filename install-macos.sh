@@ -39,6 +39,7 @@ brew install --cask karabiner-elements
 brew install --cask keepassxc
 brew install --cask vlc
 brew install --cask wezterm
+brew install actionlint
 brew install bat
 brew install eza
 brew install fd
@@ -48,7 +49,13 @@ brew install git-delta
 brew install mise
 brew install nvim
 brew install ripgrep
+brew install selene
+brew install stylua
 brew install syncthing
+
+echo "Installing Node.js language servers..."
+
+npm install --global @astrojs/language-server vscode-langservers-extracted
 
 echo "Performing additional configuration..."
 
