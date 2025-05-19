@@ -276,7 +276,9 @@ null_ls.setup({
     null_ls.builtins.diagnostics.actionlint,
     -- null_ls.builtins.diagnostics.ruff,
     null_ls.builtins.diagnostics.selene,
-    null_ls.builtins.diagnostics.stylelint,
+    null_ls.builtins.diagnostics.stylelint.with({
+      extra_filetypes = { "astro", "html" },
+    }),
     null_ls.builtins.diagnostics.terraform_validate,
     null_ls.builtins.formatting.prettier.with({
       -- Enable .ts config files
@@ -284,7 +286,9 @@ null_ls.setup({
       extra_filetypes = { "astro", "mdx", "sql" },
     }),
     -- null_ls.builtins.formatting.ruff,
-    null_ls.builtins.formatting.stylelint,
+    null_ls.builtins.formatting.stylelint.with({
+      extra_filetypes = { "astro", "html" },
+    }),
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.terraform_fmt,
   },
