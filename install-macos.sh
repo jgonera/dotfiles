@@ -40,9 +40,11 @@ brew install --cask amethyst
 brew install --cask android-studio
 brew install --cask firefox
 brew install --cask font-hack
+brew install --cask google-chrome
 brew install --cask obsidian
 brew install --cask karabiner-elements
 brew install --cask keepassxc
+brew install --cask maccy
 brew install --cask microsoft-teams
 brew install --cask vlc
 brew install --cask wezterm
@@ -67,8 +69,8 @@ echo "Installing additional dev tools..."
 # Language servers
 npm install --global @astrojs/language-server vscode-langservers-extracted
 # Workaround for XCode not seeing mise-installed tools
-sudo ln -s ~/.local/share/mise/shims/node /usr/local/bin/node
-sudo ln -s ~/.local/share/mise/shims/npm /usr/local/bin/npm
+sudo ln -sf ~/.local/share/mise/shims/node /usr/local/bin/node
+sudo ln -sf ~/.local/share/mise/shims/npm /usr/local/bin/npm
 
 echo "Performing additional configuration..."
 
