@@ -31,7 +31,7 @@ export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 
 # Useful aliases and functions
 alias h="fc -liD"
-alias ll="eza -alF"
+alias ll="eza -al"
 alias tree="eza --tree --ignore-glob node_modules"
 
 local ZSHRC_DIR="$(dirname $(readlink $(print -P %N)))"
