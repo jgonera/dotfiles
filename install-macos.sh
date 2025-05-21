@@ -66,6 +66,8 @@ brew install syncthing
 
 echo "Installing additional dev tools..."
 
+mise install
+
 # Language servers
 mise exec node -- npm install --global @astrojs/language-server vscode-langservers-extracted
 
