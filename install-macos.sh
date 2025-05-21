@@ -66,8 +66,12 @@ brew install syncthing
 
 echo "Installing additional dev tools..."
 
+# Activate mise so that we can use node, npm, etc.
+eval "$(mise activate bash)"
+
 # Language servers
 npm install --global @astrojs/language-server vscode-langservers-extracted
+
 # Workaround for XCode not seeing mise-installed tools
 sudo ln -sf ~/.local/share/mise/shims/node /usr/local/bin/node
 sudo ln -sf ~/.local/share/mise/shims/npm /usr/local/bin/npm
