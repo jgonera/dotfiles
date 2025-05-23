@@ -46,6 +46,7 @@ brew install --cask karabiner-elements
 brew install --cask keepassxc
 brew install --cask maccy
 brew install --cask microsoft-teams
+brew install --cask spotify
 brew install --cask vlc
 brew install --cask wezterm
 brew install --cask whatsapp
