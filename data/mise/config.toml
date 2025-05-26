@@ -1,5 +1,6 @@
 [tools]
 node = "lts"
+python = "latest"
 rust = "latest"
 
 [settings]
