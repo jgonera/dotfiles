@@ -70,6 +70,78 @@ require("lazy").setup({
       vim.o.timeoutlen = 300
     end,
   },
+  -- LLMs
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false, -- Never set this value to "*"! Never!
+    opts = {
+      -- add any opts here
+      -- for example
+      provider = "ollama",
+      ollama = {
+        endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
+        model = "devstral",
+      },
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
+  {
+    "joshuavial/aider.nvim",
+    opts = {
+      -- your configuration comes here
+      -- if you don't want to use the default settings
+      auto_manage_context = true, -- automatically manage buffer context
+      default_bindings = true, -- use default <leader>A keybindings
+      debug = false, -- enable debug logging
+    },
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("codecompanion").setup({
+        adapters = {
+          devstral = require("codecompanion.adapters").extend(
+            "ollama",
+            { name = "devstral", schema = { model = { default = "devstral" } } }
+          ),
+        },
+        strategies = {
+          chat = {
+            adapter = "devstral",
+          },
+          inline = {
+            adapter = "devstral",
+          },
+          cmd = {
+            adapter = "devstral",
+          },
+        },
+      })
+    end,
+  },
 })
 
 require("onedark").setup({
