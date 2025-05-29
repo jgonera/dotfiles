@@ -66,6 +66,7 @@ brew install ripgrep
 brew install selene
 brew install stylua
 brew install syncthing
+brew install uv
 
 echo "Installing additional dev tools..."
 
