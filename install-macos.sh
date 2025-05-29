@@ -42,12 +42,13 @@ brew install --cask android-studio
 brew install --cask firefox
 brew install --cask font-hack
 brew install --cask google-chrome
-brew install --cask obsidian
+brew install --cask google-cloud-sdk
 brew install --cask karabiner-elements
 brew install --cask keepassxc
 brew install --cask maccy
 brew install --cask microsoft-teams
 brew install --cask nordvpn
+brew install --cask obsidian
 brew install --cask spotify
 brew install --cask vlc
 brew install --cask wezterm
