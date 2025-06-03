@@ -50,6 +50,7 @@ brew install --cask microsoft-teams
 brew install --cask nordvpn
 brew install --cask obsidian
 brew install --cask spotify
+brew install --cask syncthing
 brew install --cask vlc
 brew install --cask wezterm
 brew install --cask whatsapp
@@ -66,7 +67,6 @@ brew install nvim
 brew install ripgrep
 brew install selene
 brew install stylua
-brew install syncthing
 brew install uv
 
 echo "Installing additional dev tools..."
