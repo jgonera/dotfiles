@@ -64,6 +64,7 @@ brew install git
 brew install git-delta
 brew install mise
 brew install nvim
+brew install opentofu
 brew install ripgrep
 brew install selene
 brew install stylua
