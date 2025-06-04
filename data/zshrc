@@ -50,14 +50,6 @@ done <<< (
 # Mise
 eval "$(mise activate zsh)"
 
-function task() {
-  local DIR=$(pwd)
-  while [ ! -z "$DIR" ] && [ ! -f "$DIR/Taskfile" ]; do
-    DIR="${DIR%\/*}"
-  done
-  $DIR/Taskfile $@
-}
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
 
