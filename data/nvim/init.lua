@@ -359,7 +359,7 @@ null_ls.setup({
     null_ls.builtins.diagnostics.stylelint.with({
       extra_filetypes = { "astro", "html" },
     }),
-    null_ls.builtins.diagnostics.terraform_validate,
+    null_ls.builtins.diagnostics.opentofu_validate,
     null_ls.builtins.formatting.prettier.with({
       -- Enable .ts config files
       env = { NODE_OPTIONS = "--experimental-strip-types" },
@@ -370,7 +370,7 @@ null_ls.setup({
       extra_filetypes = { "astro", "html" },
     }),
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.terraform_fmt,
+    null_ls.builtins.formatting.opentofu_fmt,
   },
 })
 
