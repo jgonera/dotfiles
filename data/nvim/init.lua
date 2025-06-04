@@ -180,6 +180,7 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.breakindent = true
 -- Don't fold by default
 vim.opt.foldenable = false
 -- Prevent cluttering up working directory with ~ and .swp files
