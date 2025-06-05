@@ -51,7 +51,7 @@ done <<< (
 eval "$(mise activate zsh)"
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
+complete -o nospace -C /opt/homebrew/bin/tofu tofu
 
 # prompt
 autoload -Uz colors && colors
