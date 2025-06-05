@@ -69,6 +69,7 @@ brew install ripgrep
 brew install selene
 brew install stylua
 brew install uv
+brew install vips
 
 echo "Installing additional dev tools..."
 
