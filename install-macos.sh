@@ -39,6 +39,7 @@ echo "Installing Homebrew packages..."
 brew install --cask alacritty
 brew install --cask amethyst
 brew install --cask android-studio
+brew install --cask darktable
 brew install --cask firefox
 brew install --cask font-hack
 brew install --cask google-chrome
