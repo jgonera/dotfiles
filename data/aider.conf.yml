@@ -1,4 +1,6 @@
+completion-menu-bg-color: "#333333"
 dark-mode: true
-model: ollama_chat/devstral
+model: openai/o4-mini
 set-env:
-  - OLLAMA_API_BASE=http://127.0.0.1:11434
+  - OPENAI_API_BASE=http://127.0.0.1:11434
+  - OPENAI_API_KEY=lol
