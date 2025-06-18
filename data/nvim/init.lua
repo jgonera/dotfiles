@@ -318,8 +318,6 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 })
 
 -- LSP
-vim.lsp.enable({ "eslint" })
-
 local eslint_on_attach = vim.lsp.config.eslint.on_attach
 
 vim.lsp.config("eslint", {
@@ -332,11 +330,19 @@ vim.lsp.config("eslint", {
   end,
 })
 
+-- vim.lsp.config["kotlin"] = {
+--   cmd = { vim.fn.expand("$HOME/kotlin-lsp/kotlin-lsp.sh"), "--stdio" },
+--   filetypes = { "kotlin" },
+--   root_markers = { "build.gradle.kts", ".git" },
+-- }
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 vim.lsp.config("*", {
   capabilities = capabilities,
 })
+
+vim.lsp.enable({ "eslint" })
 
 -- require("mason").setup()
 -- require("mason-lspconfig").setup({
