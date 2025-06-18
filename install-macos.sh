@@ -8,6 +8,7 @@ echo "Creating symlinks..."
 
 mkdir ~/.config || true
 mkdir ~/.config/bat || true
+mkdir ~/.config/darktable || true
 mkdir -p ~/Library/Preferences/org.videolan.vlc || true
 
 ln -sfn "$DOTFILES_DIR/data/aider.conf.yml" ~/.aider.conf.yml
@@ -15,6 +16,7 @@ ln -sfn "$DOTFILES_DIR/data/alacritty" ~/.config/alacritty
 ln -sfn "$DOTFILES_DIR/data/amethyst.yml" ~/.amethyst.yml
 ln -sfn "$DOTFILES_DIR/data/bat.conf" ~/.config/bat/config
 ln -sfn "$DOTFILES_DIR/data/bin" ~/bin
+ln -sfn "$DOTFILES_DIR/data/darktable/darktablerc" ~/.config/darktable/darktablerc
 ln -sfn "$DOTFILES_DIR/data/git" ~/.config/git
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/mise" ~/.config/mise
