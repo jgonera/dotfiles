@@ -58,6 +58,7 @@ brew install --cask vlc
 brew install --cask wezterm
 brew install --cask whatsapp
 brew install actionlint
+brew install aria2
 brew install bat
 brew install cocoapods
 brew install eza
