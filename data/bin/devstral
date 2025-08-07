@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
+# Based on
+# https://docs.unsloth.ai/basics/tutorials-how-to-fine-tune-and-run-llms/devstral-how-to-run-and-fine-tune
+# Use custom chat template file (from original Devstral) because of a bug in
+# Unsloth's version.
+
+DIR=$(cd "$(dirname "$0")"; pwd)
+
 llama-server \
-    -hf mistralai/Devstral-Small-2507_gguf:Q4_K_M \
+    -hf unsloth/Devstral-Small-2507-GGUF:UD-Q4_K_XL \
     --port 11434 \
     --threads -1 \
     --ctx-size 131072 \
@@ -17,5 +24,6 @@ llama-server \
     --top-k 64 \
     --top-p 0.95 \
     --jinja \
-    --verbose
-    # -hf lmstudio-community/Devstral-Small-2507-GGUF:Q4_K_M \
+    --verbose \
+    --chat-template-file "$DIR/devstral.jinja"
+    # -hf mistralai/Devstral-Small-2507_gguf:Q4_K_M \
