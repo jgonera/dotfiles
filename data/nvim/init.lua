@@ -1,15 +1,23 @@
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Change the leader key from \ to ,
+-- Has to be done before lazy.nvim setup for plugin keys to work.
+vim.g.mapleader = ","
 
 require("lazy").setup({
   -- Color scheme
@@ -149,6 +157,23 @@ require("lazy").setup({
       })
     end,
   },
+  {
+    "NickvanDyke/opencode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    ---@type opencode.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { '<leader>ot', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
+      { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
+      { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
+      { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
+      { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
+      { '<leader>oy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
+      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
+      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+    },
+  },
 })
 
 require("onedark").setup({
@@ -186,8 +211,6 @@ vim.opt.foldenable = false
 -- Prevent cluttering up working directory with ~ and .swp files
 vim.opt.backup = false
 vim.opt.swapfile = false
--- Change the leader key from \ to ,
-vim.g.mapleader = ","
 -- Alias ; for : (faster to type)
 vim.keymap.set({ "n", "v" }, ";", ":")
 -- Don't wrap text by default. Leader+w to toggle
