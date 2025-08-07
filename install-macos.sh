@@ -21,6 +21,7 @@ ln -sfn "$DOTFILES_DIR/data/git" ~/.config/git
 ln -sfn "$DOTFILES_DIR/data/karabiner" ~/.config/karabiner
 ln -sfn "$DOTFILES_DIR/data/mise" ~/.config/mise
 ln -sfn "$DOTFILES_DIR/data/nvim" ~/.config/nvim
+ln -sfn "$DOTFILES_DIR/data/opencode" ~/.config/opencode
 ln -sfn "$DOTFILES_DIR/data/ripgreprc" ~/.ripgreprc
 ln -sfn "$DOTFILES_DIR/data/vlcrc" ~/Library/Preferences/org.videolan.vlc/vlcrc
 ln -sfn "$DOTFILES_DIR/data/wezterm.lua" ~/.wezterm.lua
@@ -73,6 +74,7 @@ brew install nvim
 brew install opentofu
 brew install ripgrep
 brew install selene
+brew install sst/tap/opencode
 brew install stylua
 brew install uv
 brew install vips
