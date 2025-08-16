@@ -69,6 +69,7 @@ brew install fd
 brew install fzf
 brew install git
 brew install git-delta
+brew install --no-quarantine grishka/grishka/neardrop
 brew install mise
 brew install nvim
 brew install opentofu
