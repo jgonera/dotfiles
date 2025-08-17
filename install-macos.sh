@@ -63,13 +63,14 @@ brew install --cask whatsapp
 brew install actionlint
 brew install aria2
 brew install bat
+brew install chrismytton/formula/shoreman
 brew install cocoapods
 brew install eza
 brew install fd
 brew install fzf
 brew install git
 brew install git-delta
-brew install --no-quarantine grishka/grishka/neardrop
+brew install grishka/grishka/neardrop --no-quarantine
 brew install mise
 brew install nvim
 brew install opentofu
