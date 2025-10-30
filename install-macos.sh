@@ -43,6 +43,7 @@ brew install --cask alacritty
 brew install --cask amethyst
 brew install --cask android-studio
 brew install --cask darktable
+brew install --cask docker
 brew install --cask firefox
 brew install --cask font-hack
 brew install --cask google-chrome
