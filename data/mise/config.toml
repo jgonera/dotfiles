@@ -1,5 +1,7 @@
 [tools]
-node = "lts"
+node.version = "lts"
+node.postinstall = "npm install --global @astrojs/language-server vscode-langservers-extracted"
+
 python = "latest"
 rust = "latest"
 

@@ -86,9 +86,6 @@ echo "Installing additional dev tools..."
 
 mise install
 
-# Language servers
-mise exec node -- npm install --global @astrojs/language-server vscode-langservers-extracted
-
 # Workaround for XCode not seeing mise-installed tools
 sudo mkdir -p /usr/local/bin
 sudo ln -sf ~/.local/share/mise/shims/node /usr/local/bin/node
