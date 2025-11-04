@@ -335,6 +335,11 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 -- LSP
 local eslint_on_attach = vim.lsp.config.eslint.on_attach
 
+vim.lsp.config("bashls", {
+  cmd = { "bash-language-server", "start" },
+  filetypes = { "bash", "sh" },
+})
+
 vim.lsp.config("eslint", {
   on_attach = function(client, bufnr)
     eslint_on_attach(client)
@@ -357,7 +362,7 @@ vim.lsp.config("*", {
   capabilities = capabilities,
 })
 
-vim.lsp.enable({ "eslint" })
+vim.lsp.enable({ "bashls", "eslint" })
 
 -- require("mason").setup()
 -- require("mason-lspconfig").setup({

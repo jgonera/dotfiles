@@ -79,6 +79,7 @@ brew install ripgrep
 brew install rsync
 brew install selene
 brew install shellcheck
+brew install shfmt
 brew install sst/tap/opencode
 brew install stylua
 brew install uv
