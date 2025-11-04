@@ -76,6 +76,7 @@ brew install mise
 brew install nvim
 brew install opentofu
 brew install ripgrep
+brew install rsync
 brew install selene
 brew install sst/tap/opencode
 brew install stylua
