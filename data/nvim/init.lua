@@ -333,6 +333,14 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 })
 
 -- LSP
+require("typescript-tools").setup({
+  settings = {
+    tsserver_file_preferences = {
+      importModuleSpecifierPreference = "non-relative",
+    },
+  },
+})
+
 local eslint_on_attach = vim.lsp.config.eslint.on_attach
 
 vim.lsp.config("bashls", {
