@@ -206,7 +206,7 @@ toggle-float:
 
 # Display the layout HUD with the current layout on each screen.
 display-current-layout:
-  mod: mod1
+  mod: mod2
   key: i
 
 # Turn on or off tiling entirely.
