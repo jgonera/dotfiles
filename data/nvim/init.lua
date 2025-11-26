@@ -87,11 +87,13 @@ require("lazy").setup({
       -- add any opts here
       -- for example
       provider = "ollama",
-      ollama = {
-        endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
-        model = "devstral",
-        temperature = 0,
-        disable_tools = true,
+      providers = {
+        ollama = {
+          endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
+          model = "devstral",
+          temperature = 0,
+          disable_tools = true,
+        },
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -125,15 +127,17 @@ require("lazy").setup({
     config = function()
       require("codecompanion").setup({
         adapters = {
-          devstral = require("codecompanion.adapters").extend("ollama", {
-            name = "devstral",
-            schema = {
-              model = { default = "devstral" },
-              temperature = {
-                default = 0,
+          http = {
+            devstral = require("codecompanion.adapters.http").extend("ollama", {
+              name = "devstral",
+              schema = {
+                model = { default = "devstral" },
+                temperature = {
+                  default = 0,
+                },
               },
-            },
-          }),
+            }),
+          },
         },
         strategies = {
           chat = {
