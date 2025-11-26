@@ -357,7 +357,15 @@ vim.lsp.config("eslint", {
     eslint_on_attach(client)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
-      command = "LspEslintFixAll",
+      callback = function()
+        local params = {
+          command = "eslint.executeAutofix",
+          arguments = {
+            vim.api.nvim_buf_get_name(bufnr),
+          },
+        }
+        client.request("workspace/executeCommand", params, nil, bufnr)
+      end,
     })
   end,
 })
