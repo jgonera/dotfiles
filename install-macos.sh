@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-DOTFILES_DIR=$(cd "$(dirname "$0")"; pwd)
+DOTFILES_DIR=$(
+  cd "$(dirname "$0")"
+  pwd
+)
 
 echo "Creating symlinks..."
 
@@ -69,6 +72,7 @@ brew install cocoapods
 brew install eza
 brew install fd
 brew install fzf
+brew install gh
 brew install git
 brew install git-delta
 brew install grishka/grishka/neardrop --no-quarantine
@@ -96,7 +100,7 @@ sudo ln -sf ~/.local/share/mise/shims/npm /usr/local/bin/npm
 
 echo "Performing additional configuration..."
 
-$(brew --prefix)/opt/fzf/install
+"$(brew --prefix)/opt/fzf/install"
 
 # https://github.com/zsh-users/zsh-completions/issues/433
 # sudo chown -R "$USER" /usr/local/share/zsh
