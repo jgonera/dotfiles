@@ -51,6 +51,7 @@ brew install --cask firefox
 brew install --cask font-hack
 brew install --cask google-chrome
 brew install --cask google-cloud-sdk
+brew install --cask jordanbaird-ice
 brew install --cask karabiner-elements
 brew install --cask keepassxc
 brew install --cask maccy
@@ -68,6 +69,7 @@ brew install actionlint
 brew install aria2
 brew install bat
 brew install chrismytton/formula/shoreman
+brew install cloud-sql-proxy
 brew install cocoapods
 brew install eza
 brew install fd
