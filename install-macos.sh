@@ -79,6 +79,7 @@ brew install git
 brew install git-delta
 brew install grishka/grishka/neardrop --no-quarantine
 brew install mise
+brew install nono
 brew install nvim
 brew install opentofu
 brew install ripgrep
