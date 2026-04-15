@@ -33,7 +33,7 @@ export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 alias h="fc -liD"
 alias ll="eza -al"
 alias tree="eza --tree --ignore-glob node_modules"
-alias nclaude="nono run --allow-cwd --profile claude-code -- claude --dangerously-skip-permissions"
+alias nclaude="nono run --allow-cwd --allow /Users/juliusz/.local/share/mise --profile claude-code -- claude --dangerously-skip-permissions"
 
 local ZSHRC_DIR="$(dirname $(readlink $(print -P %N)))"
 export FPATH="$ZSHRC_DIR/zsh:$FPATH"
