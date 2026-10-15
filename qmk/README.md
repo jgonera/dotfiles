@@ -91,8 +91,14 @@ for breaking changes first.
 
 `.github/workflows/qmk.yml` runs `make build` and `make draw` on every push or
 pull request that touches `qmk/`. The firmware and images are uploaded as
-artifacts of the run (`firmware` and `images`). The run fails if the committed
-images don't match the layout.
+artifacts of the run (`firmware` and `images`), which expire after 90 days.
+The run fails if the committed images don't match the layout.
+
+Builds from `master` are also published as
+[releases](https://github.com/jgonera/dotfiles/releases) tagged
+`qmk-<date>-<commit>`, with the firmware and images attached. Only the latest
+3 are kept (`KEEP_RELEASES` in the workflow), older ones and their tags are
+deleted.
 
 ## Differences from the Oryx version
 
