@@ -1,7 +1,8 @@
 # Keyboard layout
 
-[QMK](https://docs.qmk.fm/) firmware for my ErgoDox EZ Shine, Moonlander and
-Voyager, all built from one shared layout. This directory is a [QMK external
+[QMK](https://docs.qmk.fm/) firmware for my ErgoDox EZ (the original model,
+without RGB), Moonlander and Voyager, all built from one shared layout. This
+directory is a [QMK external
 userspace](https://docs.qmk.fm/newbs_external_userspace).
 
 ## ErgoDox EZ
@@ -71,7 +72,7 @@ run with `uvx`.
 ### Flashing
 
 Use [Keymapp](https://www.zsa.io/flash): choose the file from
-`build/firmware/` (`ergodox_ez_shine_juliusz.hex`,
+`build/firmware/` (`ergodox_ez_base_juliusz.hex`,
 `zsa_moonlander_juliusz.bin` or `zsa_voyager_juliusz.bin`), click Flash and
 press the keyboard's reset button.
 

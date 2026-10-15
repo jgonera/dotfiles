@@ -1,7 +1,7 @@
 {
     "userspace_version": "1.1",
     "build_targets": [
-        ["ergodox_ez/shine", "juliusz"],
+        ["ergodox_ez/base", "juliusz"],
         ["zsa/moonlander", "juliusz"],
         ["zsa/voyager", "juliusz"]
     ]

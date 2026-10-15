@@ -13,7 +13,7 @@ KEYMAP_DRAWER ?= uvx --from keymap-drawer==$(KEYMAP_DRAWER_VERSION) keymap
 
 # name used in file names : QMK keyboard : directory with keymaps/
 KEYBOARDS := \
-	ergodox_ez:ergodox_ez/shine:ergodox_ez \
+	ergodox_ez:ergodox_ez/base:ergodox_ez \
 	moonlander:zsa/moonlander:zsa/moonlander \
 	voyager:zsa/voyager:zsa/voyager
 KEYMAP := juliusz
@@ -46,6 +46,7 @@ setup:
 
 build: setup
 	$(QMK_RUN) qmk userspace-compile
+	rm -rf build/firmware
 	mkdir -p build/firmware
 	mv -f *.hex *.bin build/firmware/
 
