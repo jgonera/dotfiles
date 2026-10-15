@@ -22,6 +22,9 @@ jobs:
       - uses: actions/checkout@v5
 
       - uses: astral-sh/setup-uv@v6
+        with:
+          # keymap-drawer's version is pinned there
+          cache-dependency-glob: qmk/Makefile
 
       - name: Get QMK version
         id: qmk
