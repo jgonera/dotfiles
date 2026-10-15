@@ -55,12 +55,15 @@ needs to be running), unless a native `qmk` is on `PATH`, in which case
 that's used.
 
 ```sh
-make setup  # once, and after bumping QMK_VERSION: clones qmk_firmware to ~/qmk_firmware
 make        # build firmware and draw images
 make build  # build firmware only, into build/firmware/
 make draw   # draw images only, into images/
 make clean
 ```
+
+The QMK source (qmk_firmware, ~1.3 GB) is cloned to `~/.cache/qmk_firmware`
+when needed, at the version pinned by `QMK_VERSION` in the `Makefile`. It's
+safe to delete. Set `QMK_FIRMWARE` to use a different location.
 
 Drawing uses [keymap-drawer](https://github.com/caksoylar/keymap-drawer),
 run with `uvx`.
@@ -80,7 +83,7 @@ qmk/qmk/qmk`), `qmk flash` can do it from the command line.
 Bump `QMK_VERSION` (a [qmk_firmware
 tag](https://github.com/qmk/qmk_firmware/tags)) and `QMK_IMAGE` in the
 `Makefile`, and the container image in `.github/workflows/qmk.yml`. Then run
-`make setup` and `make`. Check the [QMK changelog](https://docs.qmk.fm/ChangeLog/)
+`make`. Check the [QMK changelog](https://docs.qmk.fm/ChangeLog/)
 for breaking changes first.
 
 ## GitHub Actions

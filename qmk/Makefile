@@ -7,7 +7,8 @@ KEYMAP_DRAWER_VERSION := 0.23.0
 
 SHELL := bash
 
-QMK_FIRMWARE ?= $(HOME)/qmk_firmware
+# A disposable cache, cloned by the setup target when needed.
+QMK_FIRMWARE ?= $(HOME)/.cache/qmk_firmware
 KEYMAP_DRAWER ?= uvx --from keymap-drawer==$(KEYMAP_DRAWER_VERSION) keymap
 
 # name used in file names : QMK keyboard : directory with keymaps/
@@ -32,7 +33,7 @@ endif
 all: build draw
 
 # Clones qmk_firmware at QMK_VERSION into QMK_FIRMWARE, or moves an existing
-# clone to that version.
+# clone to that version. build and draw run it automatically.
 setup:
 	@if [ ! -d "$(QMK_FIRMWARE)" ]; then \
 		git clone --depth 1 --branch $(QMK_VERSION) --recurse-submodules --shallow-submodules \
@@ -43,12 +44,12 @@ setup:
 		git -C "$(QMK_FIRMWARE)" submodule update --init --recursive --depth 1; \
 	fi
 
-build:
+build: setup
 	$(QMK_RUN) qmk userspace-compile
 	mkdir -p build/firmware
 	mv -f *.hex *.bin build/firmware/
 
-draw:
+draw: setup
 	mkdir -p build images
 	@set -e; \
 	layer_names=$$(sed -nE 's/^.define ([A-Z0-9_]+) [0-9]+$$/\1/p' users/$(KEYMAP)/layout.h); \
