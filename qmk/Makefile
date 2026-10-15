@@ -7,7 +7,8 @@ KEYMAP_DRAWER_VERSION := 0.23.0
 
 SHELL := bash
 
-# A disposable cache, cloned by the setup target when needed.
+# A disposable cache, cloned by the setup target when needed and deleted by
+# make clean.
 QMK_FIRMWARE ?= $(HOME)/.cache/qmk_firmware
 KEYMAP_DRAWER ?= uvx --from keymap-drawer==$(KEYMAP_DRAWER_VERSION) keymap
 
@@ -65,5 +66,6 @@ draw: setup
 		$(KEYMAP_DRAWER) -c keymap-drawer.yaml draw build/$$name.yaml > images/$$name.svg; \
 	done
 
+# Also deletes QMK_FIRMWARE, so don't point it at a checkout you care about.
 clean:
-	rm -rf build .build
+	rm -rf build "$(QMK_FIRMWARE)"

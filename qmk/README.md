@@ -59,12 +59,12 @@ that's used.
 make        # build firmware and draw images
 make build  # build firmware only, into build/firmware/
 make draw   # draw images only, into images/
-make clean
+make clean  # delete build/ and the qmk_firmware clone
 ```
 
 The QMK source (qmk_firmware, ~1.3 GB) is cloned to `~/.cache/qmk_firmware`
-when needed, at the version pinned by `QMK_VERSION` in the `Makefile`. It's
-safe to delete. Set `QMK_FIRMWARE` to use a different location.
+when needed, at the version pinned by `QMK_VERSION` in the `Makefile`, and
+deleted by `make clean`. Set `QMK_FIRMWARE` to use a different location.
 
 Drawing uses [keymap-drawer](https://github.com/caksoylar/keymap-drawer),
 run with `uvx`.
