@@ -96,9 +96,8 @@ The run fails if the committed images don't match the layout.
 
 Builds from `master` are also published as
 [releases](https://github.com/jgonera/dotfiles/releases) tagged
-`qmk-<date>-<commit>`, with the firmware and images attached. Only the latest
-3 are kept (`KEEP_RELEASES` in the workflow), older ones and their tags are
-deleted.
+`qmk-<date>-<commit>`, with the firmware and images attached. They're kept
+forever, so any earlier version of the layout can be flashed again.
 
 ## Differences from the Oryx version
 

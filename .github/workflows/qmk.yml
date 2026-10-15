@@ -68,8 +68,7 @@ jobs:
             exit 1
           fi
 
-  # Artifacts expire, so builds from master are also published as releases,
-  # keeping the latest KEEP_RELEASES.
+  # Artifacts expire, so builds from master are also published as releases.
   release:
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
@@ -79,7 +78,6 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      KEEP_RELEASES: 3
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -93,11 +91,3 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "Keyboard firmware $(date -u +%Y-%m-%d) ($short_sha)" \
             --notes "Built from $short_sha by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID). Flash with [Keymapp](https://www.zsa.io/flash), see [qmk/README.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA/qmk/README.md)."
-
-      - name: Delete old releases
-        run: |
-          gh release list --limit 100 --json tagName,createdAt \
-            --jq "[.[] | select(.tagName | startswith(\"qmk-\"))] | sort_by(.createdAt) | reverse | .[$KEEP_RELEASES:][].tagName" |
-            while read -r tag; do
-              gh release delete "$tag" --cleanup-tag --yes
-            done
