@@ -1,0 +1,93 @@
+name: QMK
+
+on:
+  push:
+    branches: [master]
+    paths: [qmk/**, .github/workflows/qmk.yml]
+  pull_request:
+    paths: [qmk/**, .github/workflows/qmk.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Keep in sync with QMK_IMAGE in qmk/Makefile
+    container: ghcr.io/qmk/qmk_cli:1.2.0
+    defaults:
+      run:
+        working-directory: qmk
+    env:
+      QMK_FIRMWARE: ${{ github.workspace }}/qmk_firmware
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          # keymap-drawer's version is pinned there
+          cache-dependency-glob: qmk/Makefile
+
+      - name: Get QMK version
+        id: qmk
+        run: echo "version=$(sed -nE 's/^QMK_VERSION := (.+)$/\1/p' Makefile)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache qmk_firmware
+        uses: actions/cache@v4
+        with:
+          path: qmk_firmware
+          key: qmk_firmware-${{ steps.qmk.outputs.version }}
+
+      - name: Set up qmk_firmware
+        run: |
+          git config --global --add safe.directory '*'
+          make setup
+
+      - name: Build firmware
+        run: make build
+
+      - name: Draw images
+        run: make draw
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: qmk/build/firmware/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: images
+          path: qmk/images/
+
+      - name: Check that committed images are up to date
+        run: |
+          if ! git diff --exit-code -- images; then
+            echo "::error::qmk/images/ is out of date. Run 'make draw' in qmk/ and commit the result, or use the images artifact of this run."
+            exit 1
+          fi
+
+  # Artifacts expire, so builds from master are also published as releases.
+  release:
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Create release
+        run: |
+          short_sha=${GITHUB_SHA::7}
+          tag="qmk-$(date -u +%Y%m%d-%H%M%S)-$short_sha"
+          gh release create "$tag" dist/firmware/* dist/images/* \
+            --target "$GITHUB_SHA" \
+            --title "Keyboard firmware $(date -u +%Y-%m-%d) ($short_sha)" \
+            --notes "Built from $short_sha by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID). Flash with [Keymapp](https://www.zsa.io/flash), see [qmk/README.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA/qmk/README.md)."

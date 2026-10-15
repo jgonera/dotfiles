@@ -1,0 +1,4 @@
+# keymap-drawer settings, see
+# https://github.com/caksoylar/keymap-drawer/blob/main/CONFIGURATION.md
+draw_config:
+  dark_mode: auto
